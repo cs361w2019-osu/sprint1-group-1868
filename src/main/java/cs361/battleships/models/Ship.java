@@ -8,17 +8,95 @@ import java.util.List;
 public class Ship {
 
 	@JsonProperty private List<Square> occupiedSquares;
+	private String ship_type;
+	private boolean is_sunk = false;
 
-	public Ship() {
+	//This is the constructor of the ship
+	public Ship()
+	{
 		occupiedSquares = new ArrayList<>();
 	}
-	
-	public Ship(String kind) {
-		//TODO implement
+
+	//This function is used to set the ship's type
+	public Ship(String kind)
+	{
+		ship_type = kind;		//Set the type of ship
 	}
 
-	public List<Square> getOccupiedSquares() {
-		//TODO implement
-		return null;
+	//This function used to set the coordinates of the ship.
+	public void setCoordinates(int row, char col, boolean isVerticle)
+	{
+		Square newsquare;
+		if(isVerticle)
+		{
+			if(ship_type.equals("MINESWEEPER"))
+			{
+				for(int i = 0; i < 2; i++)
+				{
+					newsquare = new Square((row + i), col);
+					occupiedSquares.add(i, newsquare);
+				}
+			}
+			else if(ship_type.equals("DESTROYER") )
+			{
+				for(int i = 0; i < 3; i++)
+				{
+					newsquare = new Square((row + i), col);
+					occupiedSquares.add(i, newsquare);
+				}
+			}
+			else if(ship_type.equals("BATTLESHIP"))
+			{
+				for(int i = 0; i < 4; i++)
+				{
+					newsquare = new Square((row + i), col);
+					occupiedSquares.add(i, newsquare);
+				}
+			}
+		}
+		else
+		{
+			if(ship_type.equals("MINESWEEPER"))
+			{
+				for(int i = 0; i < 2; i++)
+				{
+					newsquare = new Square(row, (char)((int)(col) + i));
+					occupiedSquares.add(i, newsquare);
+				}
+			}
+			else if(ship_type.equals("DESTROYER"))
+			{
+				for(int i = 0; i < 3; i++)
+				{
+					newsquare = new Square(row, (char)((int)(col) + i));
+					occupiedSquares.add(i, newsquare);
+				}
+			}
+			else if(ship_type.equals("BATTLESHIP"))
+			{
+				for(int i = 0; i < 4; i++)
+				{
+					newsquare = new Square(row, (char)((int)(col) + i));
+					occupiedSquares.add(i, newsquare);
+				}
+			}
+		}
+	}
+
+	//This function is used to set the ship status to sunk
+	public void shipSunk()
+	{
+		is_sunk = true;
+	}
+
+	//This function is used to check if the ship sunk
+	public boolean isSunk()
+	{
+		return is_sunk;
+	}
+
+	public List<Square> getOccupiedSquares()
+	{
+		return occupiedSquares;
 	}
 }
