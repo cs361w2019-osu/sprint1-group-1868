@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
+
 	private Square[][] board = new Square[10][10];		//This is the battle board
 	private List<Ship> ships;			//This is the ship list owned by player
 
@@ -13,6 +14,7 @@ public class Board {
 	***This is the constructor of the Board class, it should initial all the variables when object was created.
 	 */
 	public Board() {
+
 		//Initial the game board, a 10x10 square 2D array.
 		for(int i = 0; i < 10; i++)
 		{
@@ -29,6 +31,7 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
+
 		// TODO Implement
 		return false;
 	}
@@ -127,11 +130,13 @@ public class Board {
 	}
 
 	public List<Result> getAttacks() {
+
 		//TODO implement
 		return null;
 	}
 
 	public void setAttacks(List<Result> attacks) {
+
 		//TODO implement
 	}
 }

@@ -8,8 +8,8 @@ import java.util.List;
 public class Ship {
 
 	@JsonProperty private List<Square> occupiedSquares;
-	private String ship_type;
-	private boolean is_sunk = false;
+	@JsonProperty private String ship_type;
+	@JsonProperty private boolean is_sunk = false;
 
 	//This is the constructor of the ship
 	public Ship()
