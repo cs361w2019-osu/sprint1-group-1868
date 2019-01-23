@@ -53,7 +53,7 @@ public class Game {
         // TODO implement
         Random rand = new Random();
         return (char)(rand.nextInt(10) + 65);
-        return randC;
+     
 
     }
 
