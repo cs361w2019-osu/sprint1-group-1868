@@ -22,10 +22,6 @@ public class Board {
 		//Initial the ship list
 		this.ships = new ArrayList<>();
 
-		// TODO Implement
-
-
-
 		//Initial the game board, a 10x10 square 2D array.
 		for(int i = 0; i < 10; i++)
 		{
@@ -36,8 +32,6 @@ public class Board {
 				this.board[i][j].setColumn((char)(j+65));	//Convert j into Uppercase Character
 			}
 		}
-r
-
 	}
 
 	/*
@@ -105,6 +99,8 @@ r
 	private boolean check_location(int size, int x, char y, boolean vertical){
 			return false;
 	}
+	
+	
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 
@@ -118,7 +114,6 @@ r
 	* 							4.	Check if the shot has made current player surrender
 	* 							5. 	Return the hit status
 	 */
-
 	public Result attack(int x, char y)
 	{
 		//Initial the send back result
@@ -197,28 +192,28 @@ r
 
 	public void setShips(List<Ship> ships)
 	{
-
 		//TODO implement
-		this.ships = ships;
 	}
 
-	public List<Result> getAttacks() {
-		//TODO implement
+	public List<Result> getAttacks() 
+	{
 		AtackStatus a = AtackStatus.HIT;
 		Result r = new Result();
-
 		return r.setResult(a);
 	}
 
-	public void setAttacks(List<Result> attacks) {
-		//TODO implement
-		if(attacks.getResult() == "MISS"){
+	public void setAttacks(List<Result> attacks) 
+	{
+		if(attacks.getResult() == "MISS")
+		{
 			return false;
 		}
-		else if(attacks.getResult() == "HIT"){
+		else if(attacks.getResult() == "HIT")
+		{
 			return false;
 		}
-		else if(attacks.getResult() == "SUNK"){
+		else if(attacks.getResult() == "SUNK")
+		{
 			return false;
 		}
 		else{
