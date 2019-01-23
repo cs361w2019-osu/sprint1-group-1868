@@ -14,10 +14,7 @@ public class Board {
 	 */
 	public Board() {
 		// TODO Implement
-		miss = 0;
-		hit = 0;
-		unhit = 9;
-		unknown = 100;
+
 	}
 
 	/*
