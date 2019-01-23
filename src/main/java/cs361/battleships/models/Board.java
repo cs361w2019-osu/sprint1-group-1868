@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
+	private int miss;
+	private int hit;
+	private int unhit;
+	private int unknown;
 
 
 	private Square[][] board = new Square[10][10];		//This is the battle board
@@ -19,6 +23,9 @@ public class Board {
 	 */
 	public Board() {
 
+		// TODO Implement
+
+
 
 		//Initial the game board, a 10x10 square 2D array.
 		for(int i = 0; i < 10; i++)
@@ -30,6 +37,7 @@ public class Board {
 				board[i][j].setColumn((char)(j+65));	//Convert j into Uppercase Character
 			}
 		}
+r
 
 	}
 
@@ -39,6 +47,27 @@ public class Board {
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 
 		// TODO Implement
+
+		int area = ship.getOccupiedSquares();
+		int yy = y;
+		yy -= 64;
+		if(isVertical){
+			if((x+area)>10 || (x-area)<0){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+		else{
+			if((yy+area)>10 || (yy-area)<0){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+
 
 		if(getShips().size()==0) {
 			 if(check_location(getShips().size(), x, y , isVertical)) {
@@ -51,6 +80,7 @@ public class Board {
 
 
 		return false;
+
 	}
 
 	private boolean check_location(int size, int x, char y, boolean vertical){
@@ -69,6 +99,7 @@ public class Board {
 	* 					4.	Check if the shot has made current player surrender
 	* 					5. 	Return the hit status
 	 */
+
 	public Result attack(int x, char y)
 	{
 		//Initial the send back result
@@ -143,6 +174,7 @@ public class Board {
 	public List<Ship> getShips()
 	{
 		return ships;
+
 	}
 
 	public void setShips(List<Ship> ships)
@@ -155,11 +187,26 @@ public class Board {
 	public List<Result> getAttacks() {
 
 		//TODO implement
-		return null;
+		AtackStatus a = AtackStatus.HIT;
+		Result r = new Result();
+
+		return r.setResult(a);
 	}
 
 	public void setAttacks(List<Result> attacks) {
 
 		//TODO implement
+		if(attacks.getResult() == "MISS"){
+			return false;
+		}
+		else if(attacks.getResult() == "HIT"){
+			return false;
+		}
+		else if(attacks.getResult() == "SUNK"){
+			return false;
+		}
+		else{
+			return true;
+		}
 	}
 }
