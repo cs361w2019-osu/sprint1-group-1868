@@ -195,5 +195,12 @@ public class Board {
 		//TODO implement
 	}
 
+	public List<Result> getAttacks(){
+		//TODO implement
+		return null;
+	}
 	
+	public void setAttacks(List<Result> attacks){
+		//TODO implement
+	}
 }
