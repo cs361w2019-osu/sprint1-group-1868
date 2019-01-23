@@ -1,31 +1,41 @@
 package cs361.battleships.models;
 
 public class Result {
+	private Ship hitship;
+	private Square hitsquare;
+	private AtackStatus hitresult;
 
-	public AtackStatus getResult() {
-		//TODO implement
-		return null;
+	//This function was called when need to know the result of the hit
+	public AtackStatus getResult()
+	{
+		return hitresult;
 	}
 
-	public void setResult(AtackStatus result) {
-		//TODO implement
+	//This function was called when the hit was checked by enemy's board
+	public void setResult(AtackStatus result)
+	{
+		hitresult = result;
 	}
 
-	public Ship getShip() {
-		//TODO implement
-		return null;
+	public Ship getShip()
+	{
+		return hitship;
 	}
 
-	public void setShip(Ship ship) {
-		//TODO implement
+	//This function will call only when player's ship sunk by enemy's shot, in order to tell enemy which ship they hit.
+	public void setShip(Ship ship)
+	{
+		hitship = ship;
 	}
 
-	public Square getLocation() {
-		//TODO implement
-		return null;
+	public Square getLocation()
+	{
+		return hitsquare;
 	}
 
-	public void setLocation(Square square) {
-		//TODO implement
+	//Just like setShip(), this function is used to tell enemy where they hit and the status of the shot?
+	public void setLocation(Square square)
+	{
+		hitsquare = square;
 	}
 }
