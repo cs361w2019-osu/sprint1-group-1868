@@ -8,19 +8,26 @@ import java.util.List;
 public class Ship {
 
 	@JsonProperty private List<Square> occupiedSquares;
-	@JsonProperty private String ship_type;
-	@JsonProperty private boolean is_sunk = false;
+	private String ship_type;
+	private boolean is_sunk = false;
+
+	//This is the function to return the ship's name
+	public String shipName()
+	{
+		return this.ship_type;
+	}
 
 	//This is the constructor of the ship
 	public Ship()
 	{
-		occupiedSquares = new ArrayList<>();
+		this.occupiedSquares = new ArrayList<>();
 	}
 
 	//This function is used to set the ship's type
 	public Ship(String kind)
 	{
-		ship_type = kind;		//Set the type of ship
+		this.occupiedSquares = new ArrayList<>();
+		this.ship_type = kind;		//Set the type of ship
 	}
 
 	//This function used to set the coordinates of the ship.
@@ -29,12 +36,12 @@ public class Ship {
 		Square newsquare;
 		if(isVerticle)
 		{
-			if(ship_type.equals("MINESWEEPER"))
+			if(this.ship_type.equals("MINESWEEPER"))
 			{
 				for(int i = 0; i < 2; i++)
 				{
 					newsquare = new Square((row + i), col);
-					occupiedSquares.add(i, newsquare);
+					this.occupiedSquares.add(i, newsquare);
 				}
 			}
 			else if(ship_type.equals("DESTROYER") )
@@ -42,7 +49,7 @@ public class Ship {
 				for(int i = 0; i < 3; i++)
 				{
 					newsquare = new Square((row + i), col);
-					occupiedSquares.add(i, newsquare);
+					this.occupiedSquares.add(i, newsquare);
 				}
 			}
 			else if(ship_type.equals("BATTLESHIP"))
@@ -50,34 +57,34 @@ public class Ship {
 				for(int i = 0; i < 4; i++)
 				{
 					newsquare = new Square((row + i), col);
-					occupiedSquares.add(i, newsquare);
+					this.occupiedSquares.add(i, newsquare);
 				}
 			}
 		}
 		else
 		{
-			if(ship_type.equals("MINESWEEPER"))
+			if(this.ship_type.equals("MINESWEEPER"))
 			{
 				for(int i = 0; i < 2; i++)
 				{
 					newsquare = new Square(row, (char)((int)(col) + i));
-					occupiedSquares.add(i, newsquare);
+					this.occupiedSquares.add(i, newsquare);
 				}
 			}
-			else if(ship_type.equals("DESTROYER"))
+			else if(this.ship_type.equals("DESTROYER"))
 			{
 				for(int i = 0; i < 3; i++)
 				{
 					newsquare = new Square(row, (char)((int)(col) + i));
-					occupiedSquares.add(i, newsquare);
+					this.occupiedSquares.add(i, newsquare);
 				}
 			}
-			else if(ship_type.equals("BATTLESHIP"))
+			else if(this.ship_type.equals("BATTLESHIP"))
 			{
 				for(int i = 0; i < 4; i++)
 				{
 					newsquare = new Square(row, (char)((int)(col) + i));
-					occupiedSquares.add(i, newsquare);
+					this.occupiedSquares.add(i, newsquare);
 				}
 			}
 		}
@@ -86,17 +93,17 @@ public class Ship {
 	//This function is used to set the ship status to sunk
 	public void shipSunk()
 	{
-		is_sunk = true;
+		this.is_sunk = true;
 	}
 
 	//This function is used to check if the ship sunk
 	public boolean isSunk()
 	{
-		return is_sunk;
+		return this.is_sunk;
 	}
 
 	public List<Square> getOccupiedSquares()
 	{
-		return occupiedSquares;
+		return this.occupiedSquares;
 	}
 }

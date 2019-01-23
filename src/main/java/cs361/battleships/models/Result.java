@@ -8,34 +8,34 @@ public class Result {
 	//This function was called when need to know the result of the hit
 	public AtackStatus getResult()
 	{
-		return hitresult;
+		return this.hitresult;
 	}
 
 	//This function was called when the hit was checked by enemy's board
 	public void setResult(AtackStatus result)
 	{
-		hitresult = result;
+		this.hitresult = result;
 	}
 
 	public Ship getShip()
 	{
-		return hitship;
+		return this.hitship;
 	}
 
 	//This function will call only when player's ship sunk by enemy's shot, in order to tell enemy which ship they hit.
 	public void setShip(Ship ship)
 	{
-		hitship = ship;
+		this.hitship = ship;
 	}
 
 	public Square getLocation()
 	{
-		return hitsquare;
+		return this.hitsquare;
 	}
 
 	//Just like setShip(), this function is used to tell enemy where they hit and the status of the shot?
 	public void setLocation(Square square)
 	{
-		hitsquare = square;
+		this.hitsquare = square;
 	}
 }

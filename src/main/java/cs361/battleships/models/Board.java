@@ -4,25 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-
 	private Square[][] board = new Square[10][10];		//This is the battle board
 	private List<Ship> ships;			//This is the ship list owned by player
+	private int ship_num = 0;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 
 	***This is the constructor of the Board class, it should initial all the variables when object was created.
 	 */
-	public Board() {
+	public Board()
+	{
+		//Initial the ship list
+		this.ships = new ArrayList<>();
 
 		//Initial the game board, a 10x10 square 2D array.
 		for(int i = 0; i < 10; i++)
 		{
 			for(int j = 0; j < 10; j++)
 			{
-				board[i][j] = new Square();
-				board[i][j].setRow(i);
-				board[i][j].setColumn((char)(j+65));	//Convert j into Uppercase Character
+				this.board[i][j] = new Square();
+				this.board[i][j].setRow(i);
+				this.board[i][j].setColumn((char)(j+65));	//Convert j into Uppercase Character
 			}
 		}
 	}
@@ -30,10 +33,63 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-
-		// TODO Implement
-		return false;
+	public boolean placeShip(Ship ship, int x, char y, boolean isVertical)
+	{
+		if(ship.shipName().equals("MINESWEEPER"))
+		{
+			if(isVertical)
+			{
+				if(x<0||x>9||(int)(y)-65<0||(int)(y)-65>9||x+1>9)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if(x<0||x>9||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+1<0||(int)(y)-65+1>9)
+				{
+					return false;
+				}
+			}
+		}
+		else if(ship.shipName().equals("DESTROYER"))
+		{
+			if(isVertical)
+			{
+				if(x<0||x>9||(int)(y)-65<0||(int)(y)-65>9||x+2>9)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if(x<0||x>9||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+2<0||(int)(y)-65+2>9)
+				{
+					return false;
+				}
+			}
+		}
+		else if(ship.shipName().equals("BATTLESHIP"))
+		{
+			if(isVertical)
+			{
+				if(x<0||x>9||(int)(y)-65<0||(int)(y)-65>9||x+3>9)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if(x<0||x>9||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+3<0||(int)(y)-65+3>9)
+				{
+					return false;
+				}
+			}
+		}
+		ship.setCoordinates(x, y, isVertical);
+		this.ships.add(this.ship_num, ship);
+		this.ship_num++;
+		return true;
 	}
 
 	/*
@@ -42,12 +98,12 @@ public class Board {
 	***I assume the hit coordinates is valid here since it's not my job to check that.
 	***Function Input:			The attack coordinates
 	***Function Output:			The attack result
-	***Function Description:		This function will do the following thing:
-	* 					1.	Change the hit square's status
-	* 					2.	Check if the shot has hit any ship owned by current player
-	* 					3.	Check if the shot has hit any ship owned by current player to sunk
-	* 					4.	Check if the shot has made current player surrender
-	* 					5. 	Return the hit status
+	***Function Description:	This function will do the following thing:
+	* 							1.	Change the hit square's status
+	* 							2.	Check if the shot has hit any ship owned by current player
+	* 							3.	Check if the shot has hit any ship owned by current player to sunk
+	* 							4.	Check if the shot has made current player surrender
+	* 							5. 	Return the hit status
 	 */
 	public Result attack(int x, char y)
 	{
@@ -58,10 +114,10 @@ public class Board {
 		int sunk_num = 0;
 
 		//Record the hit location
-		currentresult.setLocation(board[x][(int)(y)-65]);
+		currentresult.setLocation(this.board[x][(int)(y)-65]);
 
 		//Change the status of the hit square on the board
-		board[x][(int)(y)-65].hitHere();
+		this.board[x][(int)(y)-65].hitHere();
 
 		//Initial the current hit result to MISS, this will change if checked hit the ship.
 		AtackStatus result = AtackStatus.MISS;
@@ -70,27 +126,26 @@ public class Board {
 		for(int i = 0; i < 3; i++)
 		{
 			//Check each square of each ships one by one
-			for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++)
+			for(int j = 0; j < this.ships.get(i).getOccupiedSquares().size(); j++)
 			{
 				//This means if the attack coordinates match the ship's coordinates, the ship been hit
-				if(ships.get(i).getOccupiedSquares().get(j).getRow() == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y )
+				if(this.ships.get(i).getOccupiedSquares().get(j).getRow() == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y )
 				{
-
 					//Check if the ship sunk
 					int checkflag = 0;
-					for(int k = 0; k < ships.get(i).getOccupiedSquares().size(); k++)
+					for(int k = 0; k < this.ships.get(i).getOccupiedSquares().size(); k++)
 					{
-						if (board[ships.get(i).getOccupiedSquares().get(k).coordinates()[0]][ships.get(i).getOccupiedSquares().get(k).coordinates()[1]].checkHere() == true)
+						if (this.board[ships.get(i).getOccupiedSquares().get(k).coordinates()[0]][this.ships.get(i).getOccupiedSquares().get(k).coordinates()[1]].checkHere() == true)
 						{
 							checkflag++;
 						}
 					}
 
-					if(ships.get(i).getOccupiedSquares().size() == checkflag)		//If all square been hit, then set the status to sunk.
+					if(this.ships.get(i).getOccupiedSquares().size() == checkflag)		//If all square been hit, then set the status to sunk.
 					{
 						result = AtackStatus.SUNK;
-						ships.get(i).shipSunk();		//Set the ship status to sunk
-						currentresult.setShip(ships.get(i));		//Record the sunk ship in the return status
+						this.ships.get(i).shipSunk();		//Set the ship status to sunk
+						currentresult.setShip(this.ships.get(i));		//Record the sunk ship in the return status
 					}
 					else		//If only hit the ship, then set status to hit.
 					{
@@ -100,7 +155,7 @@ public class Board {
 			}
 
 			//Check if the ship sunk
-			if(ships.get(i).isSunk() == true)
+			if(this.ships.get(i).isSunk() == true)
 			{
 				sunk_num++;
 			}
@@ -121,7 +176,7 @@ public class Board {
 	//This function is used to get all the ships belong to the player
 	public List<Ship> getShips()
 	{
-		return ships;
+		return this.ships;
 	}
 
 	public void setShips(List<Ship> ships)
@@ -130,13 +185,11 @@ public class Board {
 	}
 
 	public List<Result> getAttacks() {
-
 		//TODO implement
 		return null;
 	}
 
 	public void setAttacks(List<Result> attacks) {
-
 		//TODO implement
 	}
 }

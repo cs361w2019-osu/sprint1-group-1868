@@ -49,24 +49,21 @@ public class Game {
         return true;
     }
 
-    private char randCol() {
-        string col = "ABCDEFGHIJ";
-        int r = (int)(Math.random()*9);
-        char randC = col.charAt(r);
-
+    private char randCol()
+    {
         // TODO implement
-        return randC;
+        return 'X';
     }
 
-    private int randRow() {
-        int randR = (int)(Math.random()*10 +1);
-
-        return randR;
+    private int randRow()
+    {
         // TODO implement
+        return 0;
     }
 
-    private boolean randVertical() {
+    private boolean randVertical()
+    {
         // TODO implement
-        return Math.random()<0.5;
+        return false;
     }
 }
