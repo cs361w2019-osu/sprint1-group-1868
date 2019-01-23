@@ -11,40 +11,97 @@ public class Ship {
 	@JsonProperty private int s_size;
 
 
-	public Ship() {
-		//occupiedSquares = new ArrayList<>();
-		this.kind = new String();
+	@JsonProperty private List<Square> occupiedSquares;
+	@JsonProperty private String ship_type;
+	@JsonProperty private boolean is_sunk = false;
 
+	//This is the constructor of the ship
+	public Ship()
+	{
+		occupiedSquares = new ArrayList<>();
 	}
 
-	public int s_size() {
-		return this.s_size;
+	//This function is used to set the ship's type
+	public Ship(String kind)
+	{
+		ship_type = kind;		//Set the type of ship
 	}
 
-
-	public String kind(){
-		return this.kind;
-	}
-
-	public Ship(String kind) {
-		this.kind = kind;
-		if(kind.equals("MINESWEEPER")){
-				this.s_size = 2;
-				occupiedSquares = new ArrayList<>();
+	//This function used to set the coordinates of the ship.
+	public void setCoordinates(int row, char col, boolean isVerticle)
+	{
+		Square newsquare;
+		if(isVerticle)
+		{
+			if(ship_type.equals("MINESWEEPER"))
+			{
+				for(int i = 0; i < 2; i++)
+				{
+					newsquare = new Square((row + i), col);
+					occupiedSquares.add(i, newsquare);
+				}
+			}
+			else if(ship_type.equals("DESTROYER") )
+			{
+				for(int i = 0; i < 3; i++)
+				{
+					newsquare = new Square((row + i), col);
+					occupiedSquares.add(i, newsquare);
+				}
+			}
+			else if(ship_type.equals("BATTLESHIP"))
+			{
+				for(int i = 0; i < 4; i++)
+				{
+					newsquare = new Square((row + i), col);
+					occupiedSquares.add(i, newsquare);
+				}
+			}
 		}
-		else if (kind.equals("DESTROYER")){
-				this.s_size = 3;
-				occupiedSquares = new ArrayList<>(3);
+		else
+		{
+			if(ship_type.equals("MINESWEEPER"))
+			{
+				for(int i = 0; i < 2; i++)
+				{
+					newsquare = new Square(row, (char)((int)(col) + i));
+					occupiedSquares.add(i, newsquare);
+				}
+			}
+			else if(ship_type.equals("DESTROYER"))
+			{
+				for(int i = 0; i < 3; i++)
+				{
+					newsquare = new Square(row, (char)((int)(col) + i));
+					occupiedSquares.add(i, newsquare);
+				}
+			}
+			else if(ship_type.equals("BATTLESHIP"))
+			{
+				for(int i = 0; i < 4; i++)
+				{
+					newsquare = new Square(row, (char)((int)(col) + i));
+					occupiedSquares.add(i, newsquare);
+				}
+			}
 		}
-		else{
-				this.s_size = 4;
-				occupiedSquares = new ArrayList<>(4);
-
-		}
-		//occupiedSquares = new ArrayList<>();
 	}
 
-	public List<Square> getOccupiedSquares() {
+	//This function is used to set the ship status to sunk
+	public void shipSunk()
+	{
+		is_sunk = true;
+	}
+
+	//This function is used to check if the ship sunk
+	public boolean isSunk()
+	{
+		return is_sunk;
+	}
+
+	public List<Square> getOccupiedSquares()
+	{
+
 		return occupiedSquares;
 	}
 	public void takespot(int x, char y , boolean isVertical){

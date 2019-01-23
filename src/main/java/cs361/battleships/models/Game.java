@@ -50,25 +50,33 @@ public class Game {
     }
 
     private char randCol() {
+        
+
         // TODO implement
+
         Random rand = new Random();
         return (char)(rand.nextInt(10) + 65);
+
+        return randC;
+
     }
 
     private int randRow() {
+
         // TODO implement
+
         Random rand = new Random();
 
         return rand.nextInt(10);
+
+
     }
 
     private boolean randVertical() {
         // TODO implement
+
         Random rand = new Random();
-        int i =  rand.nextInt(2) ;
-        if(i ==0)
-            return true;
-        else
-            return false;
+        return Math.random()<0.5;
+
     }
 }
