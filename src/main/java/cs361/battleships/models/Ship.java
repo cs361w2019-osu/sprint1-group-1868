@@ -11,7 +11,7 @@ public class Ship {
 	@JsonProperty private int s_size;
 
 
-	@JsonProperty private List<Square> occupiedSquares;
+	
 	private String ship_type;
 	private boolean is_sunk = false;
 
