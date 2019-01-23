@@ -50,17 +50,23 @@ public class Game {
     }
 
     private char randCol() {
+        string col = "ABCDEFGHIJ";
+        int r = (int)(Math.random()*9);
+        char randC = col.charAt(r);
+
         // TODO implement
-        return 'X';
+        return randC;
     }
 
     private int randRow() {
+        int randR = (int)(Math.random()*10 +1);
+
+        return randR;
         // TODO implement
-        return 0;
     }
 
     private boolean randVertical() {
         // TODO implement
-        return false;
+        return Math.random()<0.5;
     }
 }
