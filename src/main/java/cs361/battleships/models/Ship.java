@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ship {
+	@JsonProperty private String kind;
+	@JsonProperty private ArrayList<Square> occupiedSquares;
+	@JsonProperty private int s_size;
+
 
 	@JsonProperty private List<Square> occupiedSquares;
 	private String ship_type;
@@ -106,4 +110,8 @@ public class Ship {
 	{
 		return this.occupiedSquares;
 	}
+	public void takespot(int x, char y , boolean isVertical){
+
+	}
+
 }
