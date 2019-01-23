@@ -1,12 +1,16 @@
 package cs361.battleships.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
 
+
 	private Square[][] board = new Square[10][10];		//This is the battle board
 	private List<Ship> ships;			//This is the ship list owned by player
+
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -14,6 +18,7 @@ public class Board {
 	***This is the constructor of the Board class, it should initial all the variables when object was created.
 	 */
 	public Board() {
+
 
 		//Initial the game board, a 10x10 square 2D array.
 		for(int i = 0; i < 10; i++)
@@ -25,6 +30,7 @@ public class Board {
 				board[i][j].setColumn((char)(j+65));	//Convert j into Uppercase Character
 			}
 		}
+
 	}
 
 	/*
@@ -33,9 +39,23 @@ public class Board {
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 
 		// TODO Implement
+
+		if(getShips().size()==0) {
+			 if(check_location(getShips().size(), x, y , isVertical)) {
+			 	ship.takespot(x,y,isVertical);
+				this.getShips().add(ship);
+				return true;
+			}
+		}
+
+
+
 		return false;
 	}
 
+	private boolean check_location(int size, int x, char y, boolean vertical){
+			return false;
+	}
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 
@@ -118,6 +138,7 @@ public class Board {
 		return currentresult;
 	}
 
+
 	//This function is used to get all the ships belong to the player
 	public List<Ship> getShips()
 	{
@@ -126,7 +147,9 @@ public class Board {
 
 	public void setShips(List<Ship> ships)
 	{
+
 		//TODO implement
+		this.ships = ships;
 	}
 
 	public List<Result> getAttacks() {
