@@ -6,10 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-	private int miss;
-	private int hit;
-	private int unhit;
-	private int unknown;
+	
 
 
 	private Square[][] board = new Square[10][10];		//This is the battle board
