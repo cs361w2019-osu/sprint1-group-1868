@@ -49,34 +49,25 @@ public class Game {
         return true;
     }
 
-    private char randCol() {
-        
-
+    private char randCol() {       
         // TODO implement
-
         Random rand = new Random();
         return (char)(rand.nextInt(10) + 65);
-
         return randC;
 
     }
 
     private int randRow() {
-
         // TODO implement
-
         Random rand = new Random();
-
         return rand.nextInt(10);
-
 
     }
 
-    private boolean randVertical() {
+    private boolean randVertical()
+    {
         // TODO implement
-
         Random rand = new Random();
         return Math.random()<0.5;
-
     }
 }

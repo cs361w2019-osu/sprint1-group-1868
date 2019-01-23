@@ -17,17 +17,17 @@ public class Square {
 
 	public char getColumn()
 	{
-		return column;
+		return this.column;
 	}
 
 	public void setColumn(char column)
 	{
 		this.column = column;
 	}
-
-	public int getRow() {
-
-		return row;
+	
+	public int getRow()
+	{
+		return this.row;
 	}
 
 	public void setRow(int row)
@@ -38,21 +38,21 @@ public class Square {
 	//Call this when hit the square
 	public void hitHere()
 	{
-		is_hit = true;
+		this.is_hit = true;
 	}
 
 	//Call this to check the current square's status
 	public boolean checkHere()
 	{
-		return is_hit;
+		return this.is_hit;
 	}
 
 	//Call this when need the coordinates
 	public int[] coordinates()
 	{
 		int[] coordinates = new int[2];
-		coordinates[0] = row;
-		coordinates[1] = (int)(column) - 65;
+		coordinates[0] = this.row;
+		coordinates[1] = (int)(this.column) - 65;
 		return coordinates;
 	}
 }
