@@ -195,29 +195,5 @@ public class Board {
 		//TODO implement
 	}
 
-	public List<Result> getAttacks() 
-	{
-		AtackStatus a = AtackStatus.HIT;
-		Result r = new Result();
-		return r.setResult(a);
-	}
-
-	public void setAttacks(List<Result> attacks) 
-	{
-		if(attacks.getResult() == "MISS")
-		{
-			return false;
-		}
-		else if(attacks.getResult() == "HIT")
-		{
-			return false;
-		}
-		else if(attacks.getResult() == "SUNK")
-		{
-			return false;
-		}
-		else{
-			return true;
-		}
-	}
+	
 }
