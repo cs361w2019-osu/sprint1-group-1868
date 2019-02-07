@@ -108,11 +108,11 @@ public class Board {
 	***Function Input:			The attack coordinates
 	***Function Output:			The attack result
 	***Function Description:	This function will do the following thing:
-	* 							1.	Change the hit square's status
-	* 							2.	Check if the shot has hit any ship owned by current player
-	* 							3.	Check if the shot has hit any ship owned by current player to sunk
-	* 							4.	Check if the shot has made current player surrender
-	* 							5. 	Return the hit status
+	* 				1. Change the hit square's status
+	* 				2. Check if the shot has hit any ship owned by current player
+	* 				3. Check if the shot has hit any ship owned by current player to sunk
+	* 				4. Check if the shot has made current player surrender
+	* 				5. Return the hit status
 	 */
 	public Result attack(int x, char y)
 	{
