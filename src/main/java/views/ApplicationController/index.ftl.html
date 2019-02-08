@@ -4,18 +4,37 @@
 
 <h1>The Battleship game</h1>
 
-<table id="opponent" class="battleGrid">
-</table>
 
-<table id="player" class="battleGrid">
-</table>
+<div class="main_container">
 
-<ul>
-    <li><button id="place_minesweeper">Place Minesweeper</button></li>
-    <li><button id="place_destroyer">Place Destroyer</button></li>
-    <li><button id="place_battleship">Place Battleship</button></li>
-    <li><input type="checkbox" id="is_vertical">Vertical</input></li>
-</ul>
+    <div class="board_container">
+        <table id="player" class="battleGrid">
+        </table>
+
+
+        <table id="opponent" class="battleGrid">
+        </table>
+    </div>
+    
+    <div class="lower_container">
+        <div class="button_panel">
+            <ul>
+                <li><button id="place_minesweeper">Place Minesweeper</button></li>
+                <li><button id="place_destroyer">Place Destroyer</button></li>
+                <li><button id="place_battleship">Place Battleship</button></li>
+                <li><input type="checkbox" id="is_vertical">Vertical</input></li>
+            </ul>
+        </div>
+
+        <div class="log_container">
+            <div id="inf_table">
+                <p>Test to see if its able to scroll.</p>
+
+            </div>
+        </div>
+    </div>
+
+</div>
 
 <script type="text/javascript" src="/assets/game.js"></script>
 <script>
