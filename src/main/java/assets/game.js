@@ -24,7 +24,7 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "HIT")
             className = "hit";
         else if (attack.result === "SUNK")
-            className = "hit"
+            className = "hit";
         else if (attack.result === "SURRENDER")
             alert(surrenderText);
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
@@ -40,11 +40,18 @@ function redrawGrid() {
         return;
     }
 
+    game.playersBoard.ships.forEach((ship) => {
+        console.log(ship.ship_type);
+    })
+
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+        //Testing feature:
+        console.log(square.row-1, square.column.charCodeAt(0));
+        //
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
-    markHits(game.opponentsBoard, "opponent", "You won the game");
-    markHits(game.playersBoard, "player", "You lost the game");
+    //markHits(game.opponentsBoard, "opponent", "You won the game");
+    //markHits(game.playersBoard, "player", "You lost the game");
 }
 
 var oldListener;
