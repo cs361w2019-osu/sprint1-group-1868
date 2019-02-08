@@ -52,7 +52,10 @@ public class Game {
     private char randCol()
     {
         // TODO implement
-        return 'X';
+
+        Random rand = new Random();
+        return (char)(rand.nextInt(10) + 65);
+    
     }
 
     private int randRow()

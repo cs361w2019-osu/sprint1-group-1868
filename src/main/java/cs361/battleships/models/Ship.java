@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Ship {
 
-	@JsonProperty private List<Square> occupiedSquares;
+	
 	private String ship_type;
 	private boolean is_sunk = false;
 
@@ -106,4 +106,10 @@ public class Ship {
 	{
 		return this.occupiedSquares;
 	}
+
+	public void takespot(int x, char y , boolean isVertical){
+		//WASD
+	}
+
+
 }
