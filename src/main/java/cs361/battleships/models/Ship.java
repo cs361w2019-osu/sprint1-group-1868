@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ship {
-
-	
-	private String ship_type;
-	private boolean is_sunk = false;
+	@JsonProperty private ArrayList<Square> occupiedSquares;
+	@JsonProperty private int s_size;
+	@JsonProperty private String ship_type;
+	@JsonProperty private boolean is_sunk = false;
 
 	//This is the function to return the ship's name
 	public String shipName()
@@ -38,6 +38,7 @@ public class Ship {
 		{
 			if(this.ship_type.equals("MINESWEEPER"))
 			{
+				this.s_size = 2;
 				for(int i = 0; i < 2; i++)
 				{
 					newsquare = new Square((row + i), col);
@@ -46,6 +47,7 @@ public class Ship {
 			}
 			else if(ship_type.equals("DESTROYER") )
 			{
+				this.s_size = 3;
 				for(int i = 0; i < 3; i++)
 				{
 					newsquare = new Square((row + i), col);
@@ -54,6 +56,7 @@ public class Ship {
 			}
 			else if(ship_type.equals("BATTLESHIP"))
 			{
+				this.s_size = 4;
 				for(int i = 0; i < 4; i++)
 				{
 					newsquare = new Square((row + i), col);
@@ -65,6 +68,7 @@ public class Ship {
 		{
 			if(this.ship_type.equals("MINESWEEPER"))
 			{
+				this.s_size = 2;
 				for(int i = 0; i < 2; i++)
 				{
 					newsquare = new Square(row, (char)((int)(col) + i));
@@ -73,6 +77,7 @@ public class Ship {
 			}
 			else if(this.ship_type.equals("DESTROYER"))
 			{
+				this.s_size = 3;
 				for(int i = 0; i < 3; i++)
 				{
 					newsquare = new Square(row, (char)((int)(col) + i));
@@ -81,6 +86,7 @@ public class Ship {
 			}
 			else if(this.ship_type.equals("BATTLESHIP"))
 			{
+				this.s_size = 4;
 				for(int i = 0; i < 4; i++)
 				{
 					newsquare = new Square(row, (char)((int)(col) + i));
@@ -106,10 +112,9 @@ public class Ship {
 	{
 		return this.occupiedSquares;
 	}
-
+	
 	public void takespot(int x, char y , boolean isVertical){
 		//WASD
 	}
-
 
 }
