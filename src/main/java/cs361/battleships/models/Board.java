@@ -1,16 +1,12 @@
 package cs361.battleships.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-
 	private Square[][] board = new Square[10][10];		//This is the battle board
 	private List<Ship> ships;			//This is the ship list owned by player
 	private int ship_num = 0;
-
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -96,10 +92,11 @@ public class Board {
 		return true;
 	}
 
+
+
 	private boolean check_location(int size, int x, char y, boolean vertical){
 			return false;
 	}
-	
 	
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -182,12 +179,10 @@ public class Board {
 		return currentresult;
 	}
 
-
 	//This function is used to get all the ships belong to the player
 	public List<Ship> getShips()
 	{
 		return this.ships;
-
 	}
 
 	public void setShips(List<Ship> ships)
