@@ -1,0 +1,94 @@
+/* Add additional stylesheets below
+-------------------------------------------------- */
+.main_container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    margin: auto;
+    /*border: 5px solid green;*/
+    left: 20px;
+    right: 20px;
+    width: 90%;
+    min-width: 800px;
+    height: 800px;
+}
+
+h1{
+    text-align: center;
+}
+
+.board_container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    padding: 0px;
+    margin: 0px;
+    /*border: 5px solid red;*/
+    height: 500px;
+}
+
+.battleGrid {
+    border: 1px solid black;
+    border-spacing: 0px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.battleGrid tr {
+    border: 1px solid black;
+    height: 40px;
+}
+
+.battleGrid td {
+    border: 1px solid black;
+    width: 40px;
+}
+
+td:hover {
+    background-color: gray;
+}
+
+.placed {
+    background-color: gray;
+}
+
+.occupied {
+    background-color: black;
+}
+
+.hit {
+    background-color: orange;
+}
+
+.sink {
+    background-color: red;
+}
+
+.miss {
+    background-color: blue;
+}
+
+.lower_container {
+    padding: 0px;
+    margin: 0px;
+    /*border: 5px solid purple;*/
+    display: flex;
+}
+
+.button_panel {
+    padding: 0px;
+    margin: 0px;
+    /*border: 5px solid blue;*/
+    width: 50%;
+    height: 300px;
+}
+
+.log_container {
+    padding: 0px;
+    margin: 0px;
+    /*border: 5px solid yellow;*/
+    width: 50%;
+    height: 300px;
+}
