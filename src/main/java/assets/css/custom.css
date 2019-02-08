@@ -87,4 +87,14 @@ td:hover {
     border: 5px solid yellow;
     width: 50%;
     height: 300px;
+
+}
+
+#inf_table {
+    height:200px;
+    width: 400px;
+    border: solid black;
+    overflow: scroll;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
