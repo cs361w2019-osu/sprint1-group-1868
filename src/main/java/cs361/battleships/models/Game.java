@@ -4,14 +4,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Random;
 import static cs361.battleships.models.AtackStatus.*;
 
 public class Game {
 
-    @JsonProperty private Board playersBoard = new Board();
-    @JsonProperty private Board opponentsBoard = new Board();
+    @JsonProperty private Board playersBoard;
+    @JsonProperty private Board opponentsBoard;
 
+    public Game() {
+        this.playersBoard = new Board();
+        this.opponentsBoard = new Board();
+    }
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -21,6 +25,7 @@ public class Game {
             return false;
 
         boolean opponentPlacedSuccessfully;
+
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
@@ -49,24 +54,20 @@ public class Game {
         return true;
     }
 
-    private char randCol() {
-        string col = "ABCDEFGHIJ";
-        int r = (int)(Math.random()*9);
-        char randC = col.charAt(r);
-
-        // TODO implement
-        return randC;
+    private char randCol()
+    {
+        Random rand = new Random();
+        return (char)(rand.nextInt(10) + 65);
     }
 
-    private int randRow() {
-        int randR = (int)(Math.random()*10 +1);
-
-        return randR;
-        // TODO implement
+    private int randRow()
+    {
+        Random rand = new Random();
+        return rand.nextInt(10);
     }
 
-    private boolean randVertical() {
-        // TODO implement
+    private boolean randVertical()
+    {
         return Math.random()<0.5;
     }
 }

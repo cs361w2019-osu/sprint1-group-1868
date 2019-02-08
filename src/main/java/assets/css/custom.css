@@ -6,7 +6,6 @@
     flex-direction: column;
     padding: 0px;
     margin: auto;
-    /*border: 5px solid green;*/
     left: 20px;
     right: 20px;
     width: 90%;
@@ -14,9 +13,11 @@
     height: 800px;
 }
 
+
 h1{
     text-align: center;
 }
+
 
 .board_container {
     display: flex;
@@ -25,7 +26,6 @@ h1{
     justify-content: center;
     padding: 0px;
     margin: 0px;
-    /*border: 5px solid red;*/
     height: 500px;
 }
 
@@ -73,14 +73,12 @@ td:hover {
 .lower_container {
     padding: 0px;
     margin: 0px;
-    /*border: 5px solid purple;*/
     display: flex;
 }
 
 .button_panel {
     padding: 0px;
     margin: 0px;
-    /*border: 5px solid blue;*/
     width: 50%;
     height: 300px;
 }
@@ -88,7 +86,16 @@ td:hover {
 .log_container {
     padding: 0px;
     margin: 0px;
-    /*border: 5px solid yellow;*/
     width: 50%;
     height: 300px;
+
+}
+
+#inf_table {
+    height:200px;
+    width: 400px;
+    border: solid black;
+    overflow: scroll;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

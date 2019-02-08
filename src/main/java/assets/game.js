@@ -24,7 +24,7 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "HIT")
             className = "hit";
         else if (attack.result === "SUNK")
-            className = "hit"
+            className = "hit";
         else if (attack.result === "SURRENDER")
             alert(surrenderText);
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
@@ -40,11 +40,18 @@ function redrawGrid() {
         return;
     }
 
+    game.playersBoard.ships.forEach((ship) => {
+        console.log(ship.ship_type);
+    })
+
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+        //Testing feature:
+        console.log(square.row-1, square.column.charCodeAt(0));
+        //
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
-    markHits(game.opponentsBoard, "opponent", "You won the game");
-    markHits(game.playersBoard, "player", "You lost the game");
+    //markHits(game.opponentsBoard, "opponent", "You won the game");
+    //markHits(game.playersBoard, "player", "You lost the game");
 }
 
 var oldListener;
@@ -65,12 +72,20 @@ function registerCellListener(f) {
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
+    //Test
+    console.log(row, col);
+    //
     if (isSetup) {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+            var para = document.createElement("P");
+            var t = document.createTextNode("Succuessfully place your ship");
+            para.appendChild(t);
+            document.getElementById("inf_table").appendChild(para);
             game = data;
             redrawGrid();
             placedShips++;
-            if (placedShips == 3) {
+            if (placedShips == 3)
+            {
                 isSetup = false;
                 registerCellListener((e) => {});
             }
@@ -87,13 +102,18 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            alert("Cannot complete the action");
+            //alert("Cannot complete the action");
+            var para = document.createElement("P");
+            var t = document.createTextNode("Oops! You either click on wrong place or you place ship out of board.");
+            para.appendChild(t);
+            document.getElementById("inf_table").appendChild(para);
             return;
         }
         handler(JSON.parse(req.responseText));
     });
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
+    console.log(JSON.stringify(data));
     req.send(JSON.stringify(data));
 }
 
