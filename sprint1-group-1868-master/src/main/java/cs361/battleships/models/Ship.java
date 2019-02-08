@@ -5,12 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ship
-{
-	@JsonProperty private List<Square> occupiedSquares;
+public class Ship {
+	@JsonProperty private ArrayList<Square> occupiedSquares;
 	@JsonProperty private int s_size;
 	@JsonProperty private String ship_type;
-	@JsonProperty private boolean sunk;
+	@JsonProperty private boolean is_sunk = false;
 
 	//This is the function to return the ship's name
 	public String shipName()
@@ -22,21 +21,6 @@ public class Ship
 	public Ship()
 	{
 		this.occupiedSquares = new ArrayList<>();
-		this.ship_type = new String();
-		this.sunk = false;
-		this.s_size = 0;
-		if(ship_type.equals("MINESWEEPER")){
-			this.sunk = false;
-			this.s_size=2;
-		}
-		else if(ship_type.equals("DESTROYER")){
-			this.sunk = false;
-			this.s_size=3;
-		}
-		else if(ship_type.equals("BATTLESHIP")){
-			this.sunk = false;
-			this.s_size=4;
-		}
 	}
 
 	//This function is used to set the ship's type
@@ -115,24 +99,22 @@ public class Ship
 	//This function is used to set the ship status to sunk
 	public void shipSunk()
 	{
-		this.sunk = true;
+		this.is_sunk = true;
 	}
 
 	//This function is used to check if the ship sunk
 	public boolean isSunk()
 	{
-		return this.sunk;
+		return this.is_sunk;
 	}
 
 	public List<Square> getOccupiedSquares()
 	{
 		return this.occupiedSquares;
 	}
-
-	/*
+	
 	public void takespot(int x, char y , boolean isVertical){
 		//WASD
 	}
-	*/
 
 }

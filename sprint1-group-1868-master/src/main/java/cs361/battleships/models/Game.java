@@ -31,6 +31,7 @@ public class Game {
             // let it try until it gets it right
             opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
         } while (!opponentPlacedSuccessfully);
+        System.out.println(playersBoard.getShips());
 
         return true;
     }

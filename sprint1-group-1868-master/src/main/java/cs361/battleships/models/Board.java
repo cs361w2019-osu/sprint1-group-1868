@@ -8,8 +8,7 @@ import java.util.List;
 public class Board {
 
 	private Square[][] board;			//This is the battle board
-	@JsonProperty private List<Ship> ships;			//This is the ship list owned by player
-	@JsonProperty private List<Result> attacks;
+	private List<Ship> ships;			//This is the ship list owned by player
 	private int ship_num = 0;
 
 
@@ -25,9 +24,6 @@ public class Board {
 
 		//Initial the board
 		this.board = new Square[10][10];
-
-		//Initial the attack
-		this.attacks = new ArrayList<>();
 
 		//Initial the game board, a 10x10 square 2D array.
 		for(int i = 0; i < 10; i++)
@@ -202,14 +198,15 @@ public class Board {
 
 	public void setShips(List<Ship> ships)
 	{
-		this.ships = ships;
+		//TODO implement
 	}
 
 	public List<Result> getAttacks(){
-		return this.attacks;
+		//TODO implement
+		return null;
 	}
 	
 	public void setAttacks(List<Result> attacks){
-		this.attacks = attacks;
+		//TODO implement
 	}
 }

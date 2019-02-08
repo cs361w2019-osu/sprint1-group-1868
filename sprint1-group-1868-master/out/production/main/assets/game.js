@@ -72,20 +72,12 @@ function registerCellListener(f) {
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
-    //Test
-    console.log(row, col);
-    //
     if (isSetup) {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
-            var para = document.createElement("P");
-            var t = document.createTextNode("Succuessfully place your ship");
-            para.appendChild(t);
-            document.getElementById("inf_table").appendChild(para);
             game = data;
             redrawGrid();
             placedShips++;
-            if (placedShips == 3)
-            {
+            if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
             }
@@ -102,18 +94,13 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            //alert("Cannot complete the action");
-            var para = document.createElement("P");
-            var t = document.createTextNode("Oops! You either click on wrong place or you place ship out of board.");
-            para.appendChild(t);
-            document.getElementById("inf_table").appendChild(para);
+            alert("Cannot complete the action");
             return;
         }
         handler(JSON.parse(req.responseText));
     });
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
-    console.log(JSON.stringify(data));
     req.send(JSON.stringify(data));
 }
 
