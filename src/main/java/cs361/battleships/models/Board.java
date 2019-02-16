@@ -46,6 +46,15 @@ public class Board {
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical)
 	{
+		//Check if the new ship type already existed
+		for(int i = 0; i < ships.size(); i++)
+		{
+			if(ships.get(i).shipName().equals(ship.shipName()))
+			{
+				return false;
+			}
+		}
+
 		if(ship.shipName().equals("MINESWEEPER"))
 		{
 			if(isVertical)
@@ -126,6 +135,7 @@ public class Board {
 	 */
 	public Result attack(int x, char y)
 	{
+
 		//Initial the send back result
 		Result currentresult = new Result();
 
