@@ -92,21 +92,10 @@ function cellClick() {
         }
         else
         {
+
             pass = true;
-            /*
-            if(shipType == "MINESWEEPER" && type1 == false){
-                    type1 = true;
-                    pass = true;
-            }
-            else if (shipType == "DESTROYER" && type2 == false){
-                    type2 = true;
-                    pass = true;
-            }
-            else if(shipType == "BATTLESHIP" && type3 == false){
-                    type3 = true;
-                    pass = true;
-            }
-            */
+            
+
             if(pass == true){
                 sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
                     var para = document.createElement("P");
@@ -132,7 +121,7 @@ function cellClick() {
         }
     } 
     else {
-        console.log("In ");
+
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
             redrawGrid();
