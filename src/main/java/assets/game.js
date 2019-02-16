@@ -72,20 +72,35 @@ function registerCellListener(f) {
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
+    var parentTag = this.parentNode.parentNode.id;
     //Test
-    console.log(row, col);
+    console.log(parentTag);
     //
     if (isSetup) {
-        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
-            game = data;
-            redrawGrid();
-            placedShips++;
-            if (placedShips == 3)
-            {
-                isSetup = false;
-                registerCellListener((e) => {});
-            }
-        });
+        if (parentTag == "opponent")
+        {
+            var para = document.createElement("P");
+            var t = document.createTextNode("Captain it's not our territory!");
+            para.appendChild(t);
+            document.getElementById("inf_table").appendChild(para);
+        }
+        else
+        {
+            sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+                var para = document.createElement("P");
+                var t = document.createTextNode("Succuessfully place your ship");
+                para.appendChild(t);
+                document.getElementById("inf_table").appendChild(para);
+                game = data;
+                redrawGrid();
+                placedShips++;
+                if (placedShips == 3)
+                {
+                    isSetup = false;
+                    registerCellListener((e) => {});
+                }
+            });
+        }
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
@@ -98,7 +113,11 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            alert("Cannot complete the action");
+            //alert("Cannot complete the action");
+            var para = document.createElement("P");
+            var t = document.createTextNode("Oops! You either click on wrong place or you place ship out of board.");
+            para.appendChild(t);
+            document.getElementById("inf_table").appendChild(para);
             return;
         }
         handler(JSON.parse(req.responseText));
