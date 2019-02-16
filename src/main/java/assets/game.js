@@ -75,46 +75,58 @@ function registerCellListener(f) {
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
+    var parentTag = this.parentNode.parentNode.id;
     //Test
-    console.log(row, col);
+    console.log(parentTag);
     //
     if (isSetup) {
-        pass = false;
-        if(shipType == "MINESWEEPER" && type1 == false){
-                type1 = true;
-                pass = true;
-        }
-        else if (shipType == "DESTROYER" && type2 == false){
-                type2 = true;
-                pass = true;
-        }
-        else if(shipType == "BATTLESHIP" && type3 == false){
-                type3 = true;
-                pass = true;
-        }
-
-     if(pass == true){
-        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+        if (parentTag == "opponent")
+        {
             var para = document.createElement("P");
-            var t = document.createTextNode("Succuessfully place your ship");
+            var t = document.createTextNode("Captain it's not our territory!");
             para.appendChild(t);
             document.getElementById("inf_table").appendChild(para);
-            game = data;
-            redrawGrid();
-            placedShips++;
-            if (placedShips == 3)
-            {
-                isSetup = false;
-                registerCellListener((e) => {});
+        }
+        else
+        {
+            pass = false;
+            if(shipType == "MINESWEEPER" && type1 == false){
+                    type1 = true;
+                    pass = true;
             }
-        });}
-     else {
-         var para = document.createElement("P");
-         var t = document.createTextNode("You have already placed this type of ship");
-         para.appendChild(t);
-         document.getElementById("inf_table").appendChild(para);
-     }
-    } else {
+            else if (shipType == "DESTROYER" && type2 == false){
+                    type2 = true;
+                    pass = true;
+            }
+            else if(shipType == "BATTLESHIP" && type3 == false){
+                    type3 = true;
+                    pass = true;
+            }
+            if(pass == true){
+                sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+                    var para = document.createElement("P");
+                    var t = document.createTextNode("Succuessfully place your ship");
+                    para.appendChild(t);
+                    document.getElementById("inf_table").appendChild(para);
+                    game = data;
+                    redrawGrid();
+                    placedShips++;
+                    if (placedShips == 3)
+                    {
+                        isSetup = false;
+                        registerCellListener((e) => {});
+                    }
+                });
+            }
+            else {
+                var para = document.createElement("P");
+                var t = document.createTextNode("You have already placed this type of ship");
+                para.appendChild(t);
+                document.getElementById("inf_table").appendChild(para);
+           }
+        }
+    } 
+    else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
             redrawGrid();
