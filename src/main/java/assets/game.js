@@ -3,7 +3,10 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
-
+var type1 = false; //Minesweeper
+var type2 = false; //Destroyer
+var type3 = false; //BattleShip
+var pass = false;
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
         let row = document.createElement('tr');
@@ -76,6 +79,21 @@ function cellClick() {
     console.log(row, col);
     //
     if (isSetup) {
+        pass = false;
+        if(shipType == "MINESWEEPER" && type1 == false){
+                type1 = true;
+                pass = true;
+        }
+        else if (shipType == "DESTROYER" && type2 == false){
+                type2 = true;
+                pass = true;
+        }
+        else if(shipType == "BATTLESHIP" && type3 == false){
+                type3 = true;
+                pass = true;
+        }
+
+     if(pass == true){
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             var para = document.createElement("P");
             var t = document.createTextNode("Succuessfully place your ship");
@@ -89,7 +107,13 @@ function cellClick() {
                 isSetup = false;
                 registerCellListener((e) => {});
             }
-        });
+        });}
+     else {
+         var para = document.createElement("P");
+         var t = document.createTextNode("You have already placed this type of ship");
+         para.appendChild(t);
+         document.getElementById("inf_table").appendChild(para);
+     }
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
