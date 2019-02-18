@@ -11,6 +11,7 @@ public class Ship
 	@JsonProperty private int s_size;
 	@JsonProperty private String ship_type;
 	@JsonProperty private boolean sunk;
+	@JsonProperty private int hp;
 
 	//This is the function to return the ship's name
 	public String shipName()
@@ -25,18 +26,7 @@ public class Ship
 		this.ship_type = new String();
 		this.sunk = false;
 		this.s_size = 0;
-		if(ship_type.equals("MINESWEEPER")){
-			this.sunk = false;
-			this.s_size=2;
-		}
-		else if(ship_type.equals("DESTROYER")){
-			this.sunk = false;
-			this.s_size=3;
-		}
-		else if(ship_type.equals("BATTLESHIP")){
-			this.sunk = false;
-			this.s_size=4;
-		}
+		this.hp = 0;
 	}
 
 	//This function is used to set the ship's type
@@ -44,6 +34,21 @@ public class Ship
 	{
 		this.occupiedSquares = new ArrayList<>();
 		this.ship_type = kind;		//Set the type of ship
+		if(this.ship_type.equals("MINESWEEPER")){
+			this.sunk = false;
+			this.s_size=2;
+			this.hp = 2;
+		}
+		else if(this.ship_type.equals("DESTROYER")){
+			this.sunk = false;
+			this.s_size=3;
+			this.hp = 3;
+		}
+		else if(this.ship_type.equals("BATTLESHIP")){
+			this.sunk = false;
+			this.s_size=4;
+			this.hp = 4;
+		}
 	}
 
 	//This function used to set the coordinates of the ship.
@@ -134,5 +139,15 @@ public class Ship
 		//WASD
 	}
 	*/
+
+	public int returnHp()
+	{
+		return hp;
+	}
+
+	public void hit()
+	{
+		hp--;
+	}
 
 }
