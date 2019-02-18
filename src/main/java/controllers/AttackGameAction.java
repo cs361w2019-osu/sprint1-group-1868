@@ -9,15 +9,18 @@ public class AttackGameAction {
     @JsonProperty private int x;
     @JsonProperty private char y;
 
-    public Game getGame() {
+    public Game getGame()
+    {
         return game;
     }
 
-    public int getActionRow() {
+    public int getActionRow()
+    {
         return x;
     }
 
-    public char getActionColumn() {
+    public char getActionColumn()
+    {
         return y;
     }
 }

@@ -47,61 +47,60 @@ public class Board {
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical)
 	{
 		//Check if the new ship type already existed
-		for(int i = 0; i < ships.size(); i++)
+
+		for(int i = 0; i < ships.size(); i++) {
+			if(ships.get(i).shipName().equals(ship.shipName())) {
+
+		//for(int i = 0; i < ships.size(); i++)
 		{
-			if(ships.get(i).shipName().equals(ship.shipName()))
-			{
+	//		if(ships.get(i).shipName().equals(ship.shipName()))
+		//	{
+
 				return false;
 			}
 		}
 
-		if(ship.shipName().equals("MINESWEEPER"))
-		{
-			if(isVertical)
-			{
-				if(x<0||x>10||(int)(y)-65<0||(int)(y)-65>9||x+1>9)
-				{
+
+		if(ship.shipName().equals("MINESWEEPER")) {
+			if(isVertical) {
+				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||x+1>10) {
+
+	//	if(ship.shipName().equals("MINESWEEPER"))
+	//	{
+	//		if(isVertical)
+	//		{
+	//			if(x<0||x>10||(int)(y)-65<0||(int)(y)-65>9||x+1>9)
+	//			{
+
 					return false;
 				}
 			}
-			else
-			{
-				if(x<0||x>10||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+1<0||(int)(y)-65+1>9)
-				{
-					return false;
-				}
-			}
-		}
-		else if(ship.shipName().equals("DESTROYER"))
-		{
-			if(isVertical)
-			{
-				if(x<0||x>10||(int)(y)-65<0||(int)(y)-65>9||x+2>9)
-				{
-					return false;
-				}
-			}
-			else
-			{
-				if(x<0||x>10||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+2<0||(int)(y)-65+2>9)
-				{
+			else {
+				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+1<0||(int)(y)-65+1>9) {
 					return false;
 				}
 			}
 		}
-		else if(ship.shipName().equals("BATTLESHIP"))
-		{
-			if(isVertical)
-			{
-				if(x<0||x>10||(int)(y)-65<0||(int)(y)-65>9||x+3>10)
-				{
+		else if(ship.shipName().equals("DESTROYER")) {
+			if(isVertical) {
+				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||x+2>10) {
 					return false;
 				}
 			}
-			else
-			{
-				if(x<0||x>10||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+3<0||(int)(y)-65+3>9)
-				{
+			else {
+				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+2<0||(int)(y)-65+2>9) {
+					return false;
+				}
+			}
+		}
+		else if(ship.shipName().equals("BATTLESHIP")) {
+			if(isVertical) {
+				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||x+3>10) {
+					return false;
+				}
+			}
+			else {
+				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+3<0||(int)(y)-65+3>9) {
 					return false;
 				}
 			}
@@ -113,11 +112,29 @@ public class Board {
 		return true;
 	}
 
-	/*
-	private boolean check_location(int size, int x, char y, boolean vertical){
+	//This function used to check if the fire coordinate is valid or not
+	private boolean checkFirevalid(int x, char y)
+	{
+		System.out.println("==== Check if fire valid!");
+		//Check if the coordinate out of the board
+		if(x < 0 || x > 9 || (int)(y)-65 < 0 || (int)(y)-65 > 9) {
+			System.out.println("** Fire coordinate not valid!");
 			return false;
+		}
+		else
+		{
+			//Check if already hit here
+			for (int i = 0; i < attacks.size(); i++) {
+				if (attacks.get(i).getLocation().getRow() == (x+1) && attacks.get(i).getLocation().getColumn() == y) {
+					System.out.println("** Fire coordinate not valid!");
+					return false;
+				}
+			}
+		}
+
+		System.out.println("** Fire coordinate is valid!");
+		return true;
 	}
-	*/
 	
 	
 	/*
@@ -139,66 +156,63 @@ public class Board {
 		//Initial the send back result
 		Result currentresult = new Result();
 
-		//Initial the sunk checking flag
-		int sunk_num = 0;
+		if (checkFirevalid(x, y)) {
+			//Initial the sunk checking flag
+			int sunk_num = 0;
 
-		//Record the hit location
-		currentresult.setLocation(this.board[x][(int)(y)-65]);
+			//Record the hit location
+			Square fireSquare = new Square();
+			fireSquare.setRow(x+1);
+			fireSquare.setColumn(y);
+			currentresult.setLocation(fireSquare);
 
-		//Change the status of the hit square on the board
-		this.board[x][(int)(y)-65].hitHere();
+			//Initial the current hit result to MISS, this will change if checked hit the ship.
+			AtackStatus result = AtackStatus.MISS;
 
-		//Initial the current hit result to MISS, this will change if checked hit the ship.
-		AtackStatus result = AtackStatus.MISS;
+			System.out.println("==== Checking fire result!");
 
-		//Check all three ships one by one for the shot result
-		for(int i = 0; i < 3; i++)
-		{
-			//Check each square of each ships one by one
-			for(int j = 0; j < this.ships.get(i).getOccupiedSquares().size(); j++)
-			{
-				//This means if the attack coordinates match the ship's coordinates, the ship been hit
-				if(this.ships.get(i).getOccupiedSquares().get(j).getRow() == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y )
-				{
-					//Check if the ship sunk
-					int checkflag = 0;
-					for(int k = 0; k < this.ships.get(i).getOccupiedSquares().size(); k++)
-					{
-						if (this.board[ships.get(i).getOccupiedSquares().get(k).coordinates()[0]][this.ships.get(i).getOccupiedSquares().get(k).coordinates()[1]].checkHere() == true)
-						{
-							checkflag++;
+			//Check all three ships one by one for the shot result
+			for(int i = 0; i < ships.size(); i++) {
+				//Check each square of each ships one by one
+				for(int j = 0; j < this.ships.get(i).getOccupiedSquares().size(); j++) {
+					//This means if the attack coordinates match the ship's coordinates, the ship been hit
+					if(this.ships.get(i).getOccupiedSquares().get(j).getRow()-1 == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y ) {
+						result = AtackStatus.HIT;
+						this.ships.get(i).hit();
+
+						//Check if the ship been hit to sunk
+						if(this.ships.get(i).returnHp() == 0) {
+							result = AtackStatus.SUNK;
+							this.ships.get(i).shipSunk();		//Set the ship to sunk
 						}
 					}
-
-					if(this.ships.get(i).getOccupiedSquares().size() == checkflag)		//If all square been hit, then set the status to sunk.
-					{
-						result = AtackStatus.SUNK;
-						this.ships.get(i).shipSunk();		//Set the ship status to sunk
-						currentresult.setShip(this.ships.get(i));		//Record the sunk ship in the return status
-					}
-					else		//If only hit the ship, then set status to hit.
-					{
-						result = AtackStatus.HIT;
-					}
+				}
+				//Check if the ship sunk
+				if(this.ships.get(i).isSunk() == true) {
+					sunk_num++;
 				}
 			}
 
-			//Check if the ship sunk
-			if(this.ships.get(i).isSunk() == true)
-			{
-				sunk_num++;
+			//Check if the player surrender after the shot, if the player surrender, then change the attack result to SURRENDER.
+			if(sunk_num == 3) {
+				result = AtackStatus.SURRENDER;
 			}
+
+			System.out.println("==== Packaging fire result!");
+
+			//Write the hit result into the send back result
+			currentresult.setResult(result);
+
+			//Add attack into attack list
+			attacks.add(attacks.size(), currentresult);
+
+
+		}
+		else {
+			currentresult.setResult(AtackStatus.INVALID);
 		}
 
-		//Check if the player surrender after the shot, if the player surrender, then change the attack result to SURRENDER.
-		if(sunk_num == 3)
-		{
-			result = AtackStatus.SURRENDER;
-		}
-
-		//Write the hit result into the send back result
-		currentresult.setResult(result);
-
+		System.out.println("==== Returning fire result!");
 		return currentresult;
 	}
 
