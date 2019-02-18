@@ -44,63 +44,50 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public boolean placeShip(Ship ship, int x, char y, boolean isVertical)
-	{
+	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		//Check if the new ship type already existed
 
-		for(int i = 0; i < ships.size(); i++) {
-			if(ships.get(i).shipName().equals(ship.shipName())) {
+		for (int i = 0; i < ships.size(); i++) {
+			if (ships.get(i).shipName().equals(ship.shipName())) {
 
-		//for(int i = 0; i < ships.size(); i++)
-		{
-	//		if(ships.get(i).shipName().equals(ship.shipName()))
-		//	{
+				//for(int i = 0; i < ships.size(); i++)
+				{
+					//		if(ships.get(i).shipName().equals(ship.shipName()))
+					//	{
 
-				return false;
+					return false;
+				}
 			}
 		}
 
 
-		if(ship.shipName().equals("MINESWEEPER")) {
-			if(isVertical) {
-				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||x+1>10) {
-
-	//	if(ship.shipName().equals("MINESWEEPER"))
-	//	{
-	//		if(isVertical)
-	//		{
-	//			if(x<0||x>10||(int)(y)-65<0||(int)(y)-65>9||x+1>9)
-	//			{
-
+		if (ship.shipName().equals("MINESWEEPER")) {
+			if (isVertical) {
+				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || x + 1 > 10) {
+					return false;
+				}
+			} else {
+				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 1 < 0 || (int) (y) - 65 + 1 > 9) {
 					return false;
 				}
 			}
-			else {
-				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+1<0||(int)(y)-65+1>9) {
+		} else if (ship.shipName().equals("DESTROYER")) {
+			if (isVertical) {
+				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || x + 2 > 10) {
+					return false;
+				}
+			} else {
+				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 2 < 0 || (int) (y) - 65 + 2 > 9) {
 					return false;
 				}
 			}
-		}
-		else if(ship.shipName().equals("DESTROYER")) {
-			if(isVertical) {
-				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||x+2>10) {
+		} else if (ship.shipName().equals("BATTLESHIP")) {
+			if (isVertical) {
+				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || x + 3 > 10) {
 					return false;
 				}
-			}
-			else {
-				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+2<0||(int)(y)-65+2>9) {
-					return false;
-				}
-			}
-		}
-		else if(ship.shipName().equals("BATTLESHIP")) {
-			if(isVertical) {
-				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||x+3>10) {
-					return false;
-				}
-			}
-			else {
-				if(x<1||x>10||(int)(y)-65<0||(int)(y)-65>9||(int)(y)-65+3<0||(int)(y)-65+3>9) {
+			} else {
+				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 3 < 0 || (int) (y) - 65 + 3 > 9) {
 					return false;
 				}
 			}
@@ -113,7 +100,7 @@ public class Board {
 	}
 
 	//This function used to check if the fire coordinate is valid or not
-	private boolean checkFirevalid(int x, char y)
+	public boolean checkFirevalid(int x, char y)
 	{
 		System.out.println("==== Check if fire valid!");
 		//Check if the coordinate out of the board
