@@ -40,6 +40,8 @@ function redrawGrid() {
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
+    markHits(game.playersBoard, "player", "You fucked up!");
+    markHits(game.opponentsBoard, "opponent", "No");
     if (game === undefined) {
         return;
     }
@@ -119,7 +121,6 @@ function cellClick() {
         }
     } 
     else {
-        console.log("Making attack!");
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             console.log("Attack result received!");
             game = data;
