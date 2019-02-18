@@ -20,6 +20,7 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
+    console.log("Call the markhit function!");
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
@@ -53,8 +54,8 @@ function redrawGrid() {
         //
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
-    //markHits(game.opponentsBoard, "opponent", "You won the game");
-    //markHits(game.playersBoard, "player", "You lost the game");
+    markHits(game.opponentsBoard, "opponent", "You won the game");
+    markHits(game.playersBoard, "player", "You lost the game");
 }
 
 var oldListener;
@@ -89,19 +90,10 @@ function cellClick() {
         }
         else
         {
-            pass = false;
-            if(shipType == "MINESWEEPER" && type1 == false){
-                    type1 = true;
-                    pass = true;
-            }
-            else if (shipType == "DESTROYER" && type2 == false){
-                    type2 = true;
-                    pass = true;
-            }
-            else if(shipType == "BATTLESHIP" && type3 == false){
-                    type3 = true;
-                    pass = true;
-            }
+
+            pass = true;
+            
+
             if(pass == true){
                 sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
                     var para = document.createElement("P");
@@ -127,7 +119,9 @@ function cellClick() {
         }
     } 
     else {
+        console.log("Making attack!");
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
+            console.log("Attack result received!");
             game = data;
             redrawGrid();
         })
