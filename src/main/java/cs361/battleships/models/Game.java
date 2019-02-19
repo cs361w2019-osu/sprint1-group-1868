@@ -39,18 +39,31 @@ public class Game {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
     public boolean attack(int x, char  y) {
-        Result playerAttack = opponentsBoard.attack(x, y);
+        //Check if the fire coordinates inside the board
+        //if(x<1 || x>10 || (int)(y)-65<0 || (int)(y)-65>9)
+
+        System.out.println("==== Player attack!");
+        System.out.println("** Player's fire coordinate: " + x + " " + y);
+        Result playerAttack = opponentsBoard.attack(x-1, y);
         if (playerAttack.getResult() == INVALID) {
+            System.out.println("** Fire invalid! Return false to client!");
             return false;
         }
 
+        System.out.println("==== Opponent attack!");
         Result opponentAttackResult;
+        int randX;
+        char randY;
         do {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
-            opponentAttackResult = playersBoard.attack(randRow(), randCol());
-        } while(opponentAttackResult.getResult() != INVALID);
+            randX = randRow();
+            randY = randCol();
+            opponentAttackResult = playersBoard.attack(randX, randY);
+        } while(opponentAttackResult.getResult() == INVALID);
+        System.out.println("** Attack coordinates are: " + randX + " " + randY);
 
+        System.out.println("==== Attack Finish!\n");
         return true;
     }
 

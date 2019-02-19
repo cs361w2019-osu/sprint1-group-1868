@@ -122,8 +122,9 @@ function cellClick() {
         }
     } 
     else {
-        if (parentTag == "player")
-        {
+
+        if (parentTag == "player"){
+        
             var para = document.createElement("P");
             var t = document.createTextNode("You cant shot your own land");
             para.appendChild(t);
@@ -136,6 +137,7 @@ function cellClick() {
                 redrawGrid();
             })
         }
+      
     }
 }
 

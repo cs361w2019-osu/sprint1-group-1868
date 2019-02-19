@@ -5,7 +5,7 @@ public class Square {
 
 	private int row;
 	private char column;
-	private boolean is_hit = false;			//This is used to judge if this square been hit or still not hit
+	//private boolean is_hit = false;			//This is used to judge if this square been hit or still not hit
 
 	public Square() {
 	}
@@ -36,16 +36,20 @@ public class Square {
 	}
 
 	//Call this when hit the square
+	/*
 	public void hitHere()
 	{
 		this.is_hit = true;
 	}
+	*/
 
 	//Call this to check the current square's status
+	/*
 	public boolean checkHere()
 	{
 		return this.is_hit;
 	}
+	*/
 
 	//Call this when need the coordinates
 	public int[] coordinates()
