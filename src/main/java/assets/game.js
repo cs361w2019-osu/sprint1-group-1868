@@ -17,6 +17,22 @@ function makeGrid(table, isPlayer) {
         }
         table.appendChild(row);
     }
+    console.log("Adding the caption!");
+    let title = document.createElement('caption');
+    let content = document.createElement('font');
+    content.style.fontSize="30px";
+    if(isPlayer)
+    {
+        let context = document.createTextNode("Player");
+        content.appendChild(context);
+    }
+    else
+    {
+        let context = document.createTextNode("Opponent");
+        content.appendChild(context);
+    }
+    title.appendChild(content);
+    table.appendChild(title);
 }
 
 function markHits(board, elementId, surrenderText) {
