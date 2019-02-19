@@ -98,6 +98,7 @@ function cellClick() {
     //Test
     console.log(parentTag);
     //
+
     if (isSetup) {
         if (parentTag == "opponent")
         {
@@ -137,11 +138,22 @@ function cellClick() {
         }
     } 
     else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
-            console.log("Attack result received!");
-            game = data;
-            redrawGrid();
-        })
+
+        if (parentTag == "player"){
+        
+            var para = document.createElement("P");
+            var t = document.createTextNode("You cant shot your own land");
+            para.appendChild(t);
+            document.getElementById("inf_table").appendChild(para);
+        }
+        else{
+            sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
+                console.log("Attack result received!");
+                game = data;
+                redrawGrid();
+            })
+        }
+      
     }
 }
 
