@@ -8,11 +8,12 @@ import java.util.List;
 public class Ship
 {
 	@JsonProperty private List<Square> occupiedSquares;
+	@JsonProperty private List<Square> captainSquares;
 	@JsonProperty private int s_size;
 	@JsonProperty private String ship_type;
 	@JsonProperty private boolean sunk;
 	@JsonProperty private int hp;
-
+	@JsonProperty private int c_hp;
 	//This is the function to return the ship's name
 	public String shipName()
 	{
@@ -23,31 +24,37 @@ public class Ship
 	public Ship()
 	{
 		this.occupiedSquares = new ArrayList<>();
+		this.captainSquares = new ArrayList<>();
 		this.ship_type = new String();
 		this.sunk = false;
 		this.s_size = 0;
 		this.hp = 0;
+		this.c_hp = 2;
 	}
 
 	//This function is used to set the ship's type
 	public Ship(String kind)
 	{
 		this.occupiedSquares = new ArrayList<>();
+		this.captainSquares = new ArrayList<>();
 		this.ship_type = kind;		//Set the type of ship
 		if(this.ship_type.equals("MINESWEEPER")){
 			this.sunk = false;
 			this.s_size=2;
 			this.hp = 2;
+			this.c_hp = 2;
 		}
 		else if(this.ship_type.equals("DESTROYER")){
 			this.sunk = false;
 			this.s_size=3;
 			this.hp = 3;
+			this.c_hp = 2;
 		}
 		else if(this.ship_type.equals("BATTLESHIP")){
 			this.sunk = false;
 			this.s_size=4;
 			this.hp = 4;
+			this.c_hp = 2;
 		}
 	}
 
@@ -55,6 +62,7 @@ public class Ship
 	public void setCoordinates(int row, char col, boolean isVerticle)
 	{
 		Square newsquare;
+		Square caps;
 		if(isVerticle)
 		{
 			if(this.ship_type.equals("MINESWEEPER"))
@@ -62,6 +70,10 @@ public class Ship
 				this.s_size = 2;
 				for(int i = 0; i < 2; i++)
 				{
+					if(i == 0){
+						caps = new Square((row + i), col);
+						this.captainSquares.add(caps);
+					}
 					newsquare = new Square((row + i), col);
 					this.occupiedSquares.add(i, newsquare);
 				}
@@ -71,6 +83,10 @@ public class Ship
 				this.s_size = 3;
 				for(int i = 0; i < 3; i++)
 				{
+					if(i == 1){
+						caps = new Square((row + i), col);
+						this.captainSquares.add(caps);
+					}
 					newsquare = new Square((row + i), col);
 					this.occupiedSquares.add(i, newsquare);
 				}
@@ -80,6 +96,10 @@ public class Ship
 				this.s_size = 4;
 				for(int i = 0; i < 4; i++)
 				{
+					if(i == 2){
+						caps = new Square((row + i), col);
+						this.captainSquares.add(caps);
+					}
 					newsquare = new Square((row + i), col);
 					this.occupiedSquares.add(i, newsquare);
 				}
@@ -92,6 +112,10 @@ public class Ship
 				this.s_size = 2;
 				for(int i = 0; i < 2; i++)
 				{
+					if(i == 0){
+						caps = new Square(row, (char)((int)(col)+i));
+						this.captainSquares.add(caps);
+					}
 					newsquare = new Square(row, (char)((int)(col) + i));
 					this.occupiedSquares.add(i, newsquare);
 				}
@@ -101,6 +125,10 @@ public class Ship
 				this.s_size = 3;
 				for(int i = 0; i < 3; i++)
 				{
+					if(i == 1){
+						caps = new Square(row, (char)((int) (col)+ i));
+						this.captainSquares.add(caps);
+					}
 					newsquare = new Square(row, (char)((int)(col) + i));
 					this.occupiedSquares.add(i, newsquare);
 				}
@@ -110,6 +138,10 @@ public class Ship
 				this.s_size = 4;
 				for(int i = 0; i < 4; i++)
 				{
+					if(i == 2){
+						caps = new Square(row, (char)((int) (col)+ i));
+						this.captainSquares.add(caps);
+					}
 					newsquare = new Square(row, (char)((int)(col) + i));
 					this.occupiedSquares.add(i, newsquare);
 				}
@@ -133,12 +165,6 @@ public class Ship
 	{
 		return this.occupiedSquares;
 	}
-
-	/*
-	public void takespot(int x, char y , boolean isVertical){
-		//WASD
-	}
-	*/
 
 	public int returnHp()
 	{
