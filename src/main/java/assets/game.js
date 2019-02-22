@@ -122,9 +122,18 @@ function redrawGrid() {
         //
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
+    game.playersBoard.ships.forEach((ship) => ship.captainSquares.forEach(square => {
+
+        console.log(square.row-1, square.column.charCodeAt(0));
+    document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0)-'A'.charCodeAt(0)].classList.remove("occupied");
+    document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0)-'A'.charCodeAt(0)].classList.add("captain");
+}));
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
 }
+
+
+
 
 var oldListener;
 function registerCellListener(f) {
@@ -171,6 +180,7 @@ function cellClick() {
                     placedShips++;
                     if (placedShips == 3)
                     {
+
                         isSetup = false;
                         registerCellListener((e) => {});
                     }
