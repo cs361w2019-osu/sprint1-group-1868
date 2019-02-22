@@ -134,12 +134,6 @@ public class Ship
 		return this.occupiedSquares;
 	}
 
-	/*
-	public void takespot(int x, char y , boolean isVertical){
-		//WASD
-	}
-	*/
-
 	public int returnHp()
 	{
 		return hp;

@@ -58,7 +58,15 @@ td:hover {
     background-color: black;
 }
 
+.sonar.occupied {
+    background-color: black;
+}
+
 .hit {
+    background-color: orange;
+}
+
+.sonar.hit {
     background-color: orange;
 }
 
@@ -68,6 +76,14 @@ td:hover {
 
 .miss {
     background-color: blue;
+}
+
+.sonar.miss {
+    background-color: blue;
+}
+
+.sonar {
+    background-color: gray;
 }
 
 .lower_container {

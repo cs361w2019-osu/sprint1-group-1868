@@ -10,6 +10,7 @@ public class Board {
 	private Square[][] board;			//This is the battle board
 	@JsonProperty private List<Ship> ships;			//This is the ship list owned by player
 	@JsonProperty private List<Result> attacks;
+	@JsonProperty private List<Square> sonar_pulse;         //This is used to store the sonar pulse's coordinate
 	private int ship_num = 0;
 
 
@@ -29,6 +30,9 @@ public class Board {
 		//Initial the attack
 		this.attacks = new ArrayList<>();
 
+		//Initial the sonar pulse
+		this.sonar_pulse = new ArrayList<>();
+
 		//Initial the game board, a 10x10 square 2D array.
 		for(int i = 0; i < 10; i++)
 		{
@@ -39,6 +43,21 @@ public class Board {
 				this.board[i][j].setColumn((char)(j+65));	//Convert j into Uppercase Character
 			}
 		}
+	}
+
+	public void setSonar_pulse(int x, char y)
+	{
+		Square newSonar = new Square();
+		newSonar.setRow(x);
+		newSonar.setColumn(y);
+		this.sonar_pulse.add(sonar_pulse.size(), newSonar);
+		System.out.println("** Sonar coordinate added!");
+		System.out.println(sonar_pulse);
+	}
+
+	public List<Square> getSonar_pulse()
+	{
+		return this.sonar_pulse;
 	}
 
 	/*
@@ -60,36 +79,29 @@ public class Board {
 			}
 		}
 
-
 		if (ship.shipName().equals("MINESWEEPER")) {
 			if (isVertical) {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || x + 1 > 10) {
-					return false;
-				}
+					return false; }
 			} else {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 1 < 0 || (int) (y) - 65 + 1 > 9) {
-					return false;
-				}
+					return false; }
 			}
 		} else if (ship.shipName().equals("DESTROYER")) {
 			if (isVertical) {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || x + 2 > 10) {
-					return false;
-				}
+					return false; }
 			} else {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 2 < 0 || (int) (y) - 65 + 2 > 9) {
-					return false;
-				}
+					return false; }
 			}
 		} else if (ship.shipName().equals("BATTLESHIP")) {
 			if (isVertical) {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || x + 3 > 10) {
-					return false;
-				}
+					return false; }
 			} else {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 3 < 0 || (int) (y) - 65 + 3 > 9) {
-					return false;
-				}
+					return false; }
 			}
 		}
 		Ship nShip = new Ship(ship.shipName());

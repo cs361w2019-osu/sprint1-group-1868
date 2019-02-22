@@ -67,6 +67,51 @@ public class Game {
         return true;
     }
 
+    private boolean checkSonar(int x, char y)
+    {
+        //First check if the game already start
+        if(opponentsBoard.getShips().size() != 3)
+        {
+            System.out.println("** Sonar Attack check, not gaming phase!");
+            return false;
+        }
+        //Second check if the sonar attack could deploy on the board
+        int sunk_num = 0;
+        for(int i = 0; i < 3; i++)
+        {
+            if(opponentsBoard.getShips().get(i).isSunk())
+            {
+                sunk_num++;
+            }
+        }
+        if(sunk_num == 0)
+        {
+            System.out.println("** Sonar Attack check, not sinking yet!");
+            return false;
+        }
+        //Third check if the coordinate in the board, is this really useful?
+        if(x<1 || x>10 || (int)(y) < 65 || (int)(y) > 74)
+            return false;
+        //Fourth check if the sonar already used twice
+        if(this.playersBoard.getSonar_pulse().size() == 2)
+            return false;
+        //If all pass, return true
+        return true;
+    }
+
+    public boolean sonarAttack(int x, char y)
+    {
+        System.out.println("==== Sonar Attack!");
+        if(checkSonar(x, y))        //If the sonar valid
+        {
+            this.playersBoard.setSonar_pulse(x, y);
+            System.out.println("** Sonar Attack Succeed!");
+            return true;
+        }
+        System.out.println("** Sonar Attack Fail!");
+        return false;
+    }
+
     private char randCol()
     {
         Random rand = new Random();
