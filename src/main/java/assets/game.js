@@ -89,7 +89,7 @@ function markHits(board, elementId, surrenderText) {
         if (attack.result === "MISS")
             classname = "miss";
         else if (attack.result === "CAPTAIN")
-            classname = "captain";
+            classname = "miss";
         else if (attack.result === "HIT")
             classname = "hit";
         else if (attack.result === "SUNK")
@@ -182,7 +182,6 @@ function cellClick() {
                     placedShips++;
                     if (placedShips == 3)
                     {
-
                         isSetup = false;
                         registerCellListener((e) => {});
                     }
