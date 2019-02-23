@@ -29,5 +29,4 @@ public enum AtackStatus {
 	INVALID,
 
 	CAPTAIN,
-
 }
