@@ -27,12 +27,25 @@ public class ApplicationController {
             return Results.json().render(game);
         } else {
             return Results.badRequest();
+            //return Results.status(700);
         }
     }
 
     public Result attack(Context context, AttackGameAction g) {
         Game game = g.getGame();
         boolean result = game.attack(g.getActionRow(), g.getActionColumn());
+        if (result) {
+            return Results.json().render(game);
+        } else {
+            return Results.badRequest();
+            //return Results.status(700);
+        }
+    }
+
+    public Result sonar(Context context, AttackGameAction g)
+    {
+        Game game = g.getGame();
+        boolean result = game.sonarAttack(g.getActionRow(), g.getActionColumn());
         if (result) {
             return Results.json().render(game);
         } else {

@@ -219,7 +219,6 @@ public class Board {
 						else{
 							result = AtackStatus.HIT;
 							this.ships.get(i).hit();
-
 							//Check if the ship been hit to sunk
 							if(this.ships.get(i).returnHp() == 0) {
 								result = AtackStatus.SUNK;
@@ -249,6 +248,7 @@ public class Board {
 
 
 		}
+
 		else
         {
 			currentresult.setResult(AtackStatus.INVALID);
