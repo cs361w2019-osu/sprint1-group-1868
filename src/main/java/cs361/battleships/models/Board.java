@@ -125,8 +125,10 @@ public class Board {
 			//Check if already hit here
 			for(int i = 0; i < this.attacks.size(); i++) {
 				if (this.attacks.get(i).getLocation().getRow() == (x+1) && this.attacks.get(i).getLocation().getColumn() == y) {
+				    //Check if this is the captain quarter
 					for(int j=0; j < this.ships.size(); j++){
-						if(x+1 == this.ships.get(j).getrow() && y == this.ships.get(j).getcol() && this.ships.get(j).returnCHp() > 0){
+						if(x+1 == this.ships.get(j).getrow() && y == this.ships.get(j).getcol() && this.ships.get(j).returnCHp() > 0)
+						{
 							return true;
 						}
 					}
@@ -183,7 +185,6 @@ public class Board {
 				for(int j = 0; j < this.ships.get(i).getOccupiedSquares().size(); j++) {
 					//This means if the attack coordinates match the ship's coordinates, the ship been hit
 					if(this.ships.get(i).getOccupiedSquares().get(j).getRow()-1 == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y ) {
-
 						if(this.ships.get(i).getrow() == x+1 && this.ships.get(i).getcol() == y){
 							result = AtackStatus.CAPTAIN;
 							this.ships.get(i).hitC();
@@ -191,13 +192,33 @@ public class Board {
 							if(this.ships.get(i).returnCHp() == 0) {
 								result = AtackStatus.SUNK;
 								this.ships.get(i).shipSunk();
-							}
+								for(int k = 0; k < this.ships.get(i).getOccupiedSquares().size(); k ++)
+								{
+										int checkFlag = 0;
+										for(int l = 0; l < attacks.size(); l++)
+										{
+											if(this.ships.get(i).getOccupiedSquares().get(k).getRow() == attacks.get(l).getLocation().getRow() && this.ships.get(i).getOccupiedSquares().get(k).getColumn() == attacks.get(l).getLocation().getColumn())
+											{
+												checkFlag = 1;
+											}
+										}
+										if(checkFlag == 0)
+										{
+											Square newSquare = new Square();
+											newSquare.setRow(this.ships.get(i).getOccupiedSquares().get(k).getRow());
+											newSquare.setColumn(this.ships.get(i).getOccupiedSquares().get(k).getColumn());
+											Result newResult = new Result();
+											newResult.setLocation(newSquare);
+											newResult.setResult(AtackStatus.HIT);
+											attacks.add(attacks.size(), newResult);
+										}
+									}
+								}
 						}
 
 						else{
 							result = AtackStatus.HIT;
 							this.ships.get(i).hit();
-
 							//Check if the ship been hit to sunk
 							if(this.ships.get(i).returnHp() == 0) {
 								result = AtackStatus.SUNK;
@@ -227,7 +248,9 @@ public class Board {
 
 
 		}
-		else{
+
+		else
+        {
 			currentresult.setResult(AtackStatus.INVALID);
 		}
 
