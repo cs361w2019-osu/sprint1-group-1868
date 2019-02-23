@@ -88,6 +88,8 @@ function markHits(board, elementId, surrenderText) {
         let classname;
         if (attack.result === "MISS")
             classname = "miss";
+        else if (attack.result === "CAPTAIN")
+            classname = "captain";
         else if (attack.result === "HIT")
             classname = "hit";
         else if (attack.result === "SUNK")
