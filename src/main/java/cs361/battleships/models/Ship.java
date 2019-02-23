@@ -14,6 +14,8 @@ public class Ship
 	@JsonProperty private boolean sunk;
 	@JsonProperty private int hp;
 	@JsonProperty private int c_hp;
+	@JsonProperty private int row;
+	@JsonProperty char col;
 	//This is the function to return the ship's name
 	public String shipName()
 	{
@@ -29,7 +31,9 @@ public class Ship
 		this.sunk = false;
 		this.s_size = 0;
 		this.hp = 0;
-		this.c_hp = 2;
+		this.c_hp = 0;
+		this.row = 0;
+		this.col = 'A';
 	}
 
 	//This function is used to set the ship's type
@@ -42,7 +46,7 @@ public class Ship
 			this.sunk = false;
 			this.s_size=2;
 			this.hp = 2;
-			this.c_hp = 2;
+			this.c_hp = 1;
 		}
 		else if(this.ship_type.equals("DESTROYER")){
 			this.sunk = false;
@@ -68,6 +72,9 @@ public class Ship
 			if(this.ship_type.equals("MINESWEEPER"))
 			{
 				this.s_size = 2;
+				this.row = row;
+				this.col = col;
+
 				for(int i = 0; i < 2; i++)
 				{
 					if(i == 0){
@@ -81,6 +88,9 @@ public class Ship
 			else if(ship_type.equals("DESTROYER") )
 			{
 				this.s_size = 3;
+				this.row = row+1;
+				this.col = col;
+
 				for(int i = 0; i < 3; i++)
 				{
 					if(i == 1){
@@ -94,6 +104,9 @@ public class Ship
 			else if(ship_type.equals("BATTLESHIP"))
 			{
 				this.s_size = 4;
+				this.row = row+2;
+				this.col = col;
+
 				for(int i = 0; i < 4; i++)
 				{
 					if(i == 2){
@@ -110,6 +123,9 @@ public class Ship
 			if(this.ship_type.equals("MINESWEEPER"))
 			{
 				this.s_size = 2;
+				this.row = row;
+				this.col = col;
+
 				for(int i = 0; i < 2; i++)
 				{
 					if(i == 0){
@@ -123,6 +139,9 @@ public class Ship
 			else if(this.ship_type.equals("DESTROYER"))
 			{
 				this.s_size = 3;
+				this.row = row;
+				this.col = (char)((int)(col)+1);
+
 				for(int i = 0; i < 3; i++)
 				{
 					if(i == 1){
@@ -136,6 +155,9 @@ public class Ship
 			else if(this.ship_type.equals("BATTLESHIP"))
 			{
 				this.s_size = 4;
+				this.row = row;
+				this.col = (char)((int)(col)+2);
+
 				for(int i = 0; i < 4; i++)
 				{
 					if(i == 2){
@@ -168,12 +190,28 @@ public class Ship
 
 	public int returnHp()
 	{
-		return hp;
+		return this.hp;
 	}
 
 	public void hit()
 	{
-		hp--;
+		this.hp--;
+	}
+
+	public int returnCHp() {
+		return this.c_hp;
+	}
+
+	public void hitC() {
+		this.c_hp--;
+	}
+
+	public int getrow() {
+		return this.row;
+	}
+
+	public char getcol() {
+		return this.col;
 	}
 
 }
