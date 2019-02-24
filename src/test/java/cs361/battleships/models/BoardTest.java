@@ -63,7 +63,6 @@ public class BoardTest {
         assertTrue(board_a.attack(5,'I').getResult() == AtackStatus.MISS);
         assertTrue(board.attack(8,'B').getResult() == AtackStatus.MISS);
 
-
         //player hit ship of enemy
         assertTrue(board_a.attack(2,'B').getResult() == AtackStatus.HIT);
         //enemy hit ship of player normally
@@ -73,7 +72,6 @@ public class BoardTest {
         //enemy sunk ship of player
         assertTrue(board.attack(2,'B').getResult() == AtackStatus.SUNK);
 
-        //If player use
 
         //player hit one captain quarter of enemy's ship
         assertTrue(board_a.attack(7,'D').getResult() == AtackStatus.CAPTAIN);
