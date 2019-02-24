@@ -30,6 +30,4 @@ public enum AtackStatus {
 
 	CAPTAIN,
 
-	NOTHING,
-
 }
