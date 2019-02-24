@@ -64,21 +64,15 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		//Check if the new ship type already existed
 
+		//Check if the new ship type already existed
 		for (int i = 0; i < ships.size(); i++) {
 			if (ships.get(i).shipName().equals(ship.shipName())) {
-
-				//for(int i = 0; i < ships.size(); i++)
-				{
-					//		if(ships.get(i).shipName().equals(ship.shipName()))
-					//	{
-
-					return false;
-				}
+				return false;
 			}
 		}
 
+		//Check if all grid of the ship
 		if (ship.shipName().equals("MINESWEEPER")) {
 			if (isVertical) {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || x + 1 > 10) {
@@ -106,6 +100,20 @@ public class Board {
 		}
 		Ship nShip = new Ship(ship.shipName());
 		nShip.setCoordinates(x, y, isVertical);
+		//Check if new ship's square has conflict with existed ship's square
+		for(int i = 0; i < nShip.getOccupiedSquares().size(); i++)		//Read each grid of new ship
+		{
+			for(int j = 0; j < this.ships.size(); j++)		//Read each existed ships
+			{
+				for(int k = 0; k < this.ships.get(j).getOccupiedSquares().size(); k++)		//Read each ship's grid
+				{
+					if(nShip.getOccupiedSquares().get(i).getRow() == this.ships.get(j).getOccupiedSquares().get(k).getRow() && nShip.getOccupiedSquares().get(i).getColumn() == this.ships.get(j).getOccupiedSquares().get(k).getColumn())	//If conflict
+					{
+						return false;
+					}
+				}
+			}
+		}
 		this.ships.add(this.ship_num, nShip);
 		this.ship_num++;
 		return true;
