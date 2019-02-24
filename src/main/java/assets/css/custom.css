@@ -57,6 +57,12 @@ td:hover {
 .occupied {
     background-color: black;
 }
+.captain {
+    background-color: firebrick;
+}
+.sonar.occupied {
+    background-color: black;
+}
 
 .sonar.occupied {
     background-color: black;

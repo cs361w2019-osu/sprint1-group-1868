@@ -18,6 +18,22 @@ function makeGrid(table, isPlayer) {
         }
         table.appendChild(row);
     }
+    console.log("Adding the caption!");
+    let title = document.createElement('caption');
+    let content = document.createElement('font');
+    content.style.fontSize="30px";
+    if(isPlayer)
+    {
+        let context = document.createTextNode("Player");
+        content.appendChild(context);
+    }
+    else
+    {
+        let context = document.createTextNode("Opponent");
+        content.appendChild(context);
+    }
+    title.appendChild(content);
+    table.appendChild(title);
 }
 
 function markHits(board, elementId, surrenderText) {
@@ -72,6 +88,8 @@ function markHits(board, elementId, surrenderText) {
         let classname;
         if (attack.result === "MISS")
             classname = "miss";
+        else if (attack.result === "CAPTAIN")
+            classname = "captain";
         else if (attack.result === "HIT")
             classname = "hit";
         else if (attack.result === "SUNK")
@@ -106,9 +124,18 @@ function redrawGrid() {
         //
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
+    game.playersBoard.ships.forEach((ship) => ship.captainSquares.forEach(square => {
+
+        console.log(square.row-1, square.column.charCodeAt(0));
+    document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0)-'A'.charCodeAt(0)].classList.remove("occupied");
+    document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0)-'A'.charCodeAt(0)].classList.add("captain");
+}));
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
 }
+
+
+
 
 var oldListener;
 function registerCellListener(f) {
@@ -132,6 +159,7 @@ function cellClick() {
     //Test
     console.log(parentTag);
     //
+
     if (isSetup) {
         if (parentTag == "opponent")
         {
@@ -154,6 +182,7 @@ function cellClick() {
                     placedShips++;
                     if (placedShips == 3)
                     {
+
                         isSetup = false;
                         registerCellListener((e) => {});
                     }
@@ -178,11 +207,22 @@ function cellClick() {
         })
     }
     else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
-            console.log("Attack result received!");
-            game = data;
-            redrawGrid();
-        })
+
+        if (parentTag == "player"){
+        
+            var para = document.createElement("P");
+            var t = document.createTextNode("You cant shot your own land");
+            para.appendChild(t);
+            document.getElementById("inf_table").appendChild(para);
+        }
+        else{
+            sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
+                console.log("Attack result received!");
+                game = data;
+                redrawGrid();
+            })
+        }
+      
     }
 }
 
