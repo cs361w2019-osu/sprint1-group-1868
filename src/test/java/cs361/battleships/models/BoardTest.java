@@ -38,7 +38,7 @@ public class BoardTest {
         //Some miss hit result
 
 
-        //assertTrue(board.attack(2,'B').getResult() == AtackStatus.HIT);
+        assertTrue(board.attack(2,'B').getResult() == AtackStatus.HIT);
         /*assertTrue(board.attack(5,'C').getResult() == AtackStatus.HIT);      //To check if the shot result could record the hit status
         assertTrue(board.attack(5,'D').getResult() == AtackStatus.HIT);
         assertTrue(board.attack(5,'E').getResult() == AtackStatus.HIT);
