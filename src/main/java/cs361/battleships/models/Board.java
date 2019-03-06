@@ -102,7 +102,7 @@ public class Board {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 8 || x + 3 > 10) {
 					return false; }
 			} else {
-				if (x < 2 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 3 < 0 || (int) (y) - 65 + 3 > 9) {
+				if (x < 2 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 3 > 9) {
 					return false; }
 			}
 		}
@@ -250,7 +250,7 @@ public class Board {
 			}
 
 			//Check if the player surrender after the shot, if the player surrender, then change the attack result to SURRENDER.
-			if(sunk_num == 3) {
+			if(sunk_num == 4) {
 				result = AtackStatus.SURRENDER;
 			}
 

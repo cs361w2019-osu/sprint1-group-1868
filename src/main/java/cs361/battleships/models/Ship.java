@@ -129,7 +129,7 @@ public class Ship
 				this.row = row+3;
 				this.col = col;
 
-				for(int i = 0; i < 5; i++)
+				for(int i = 0; i < 4; i++)
 				{
 					if(i == 3){
 						caps = new Square((row + i), col);
@@ -138,6 +138,8 @@ public class Ship
 					newsquare = new Square((row + i), col);
 					this.occupiedSquares.add(i, newsquare);
 				}
+				newsquare = new Square((row + 2), (char)((int)(col) + 1));
+				this.occupiedSquares.add(4, newsquare);
 			}
 		}
 		else
@@ -196,7 +198,7 @@ public class Ship
 				this.row = row;
 				this.col = (char)((int)(col)+3);
 
-				for(int i = 0; i < 5; i++)
+				for(int i = 0; i < 4; i++)
 				{
 					if(i == 3){
 						caps = new Square(row, (char)((int) (col)+ i));
@@ -205,6 +207,8 @@ public class Ship
 					newsquare = new Square(row, (char)((int)(col) + i));
 					this.occupiedSquares.add(i, newsquare);
 				}
+				newsquare = new Square(row-1, (char)((int)(col) + 2));
+				this.occupiedSquares.add(4, newsquare);
 			}
 		}
 	}
