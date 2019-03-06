@@ -12,10 +12,11 @@ public class Ship
 	@JsonProperty private int s_size;
 	@JsonProperty private String ship_type;
 	@JsonProperty private boolean sunk;
+	@JsonProperty private boolean submerged;
 	@JsonProperty private int hp;
 	@JsonProperty private int c_hp;
 	@JsonProperty private int row;
-	@JsonProperty char col;
+	@JsonProperty private char col;
 	//This is the function to return the ship's name
 	public String shipName()
 	{
@@ -47,18 +48,21 @@ public class Ship
 			this.s_size=2;
 			this.hp = 2;
 			this.c_hp = 1;
+			this.submerged = false;
 		}
 		else if(this.ship_type.equals("DESTROYER")){
 			this.sunk = false;
 			this.s_size=3;
 			this.hp = 3;
 			this.c_hp = 2;
+			this.submerged = false;
 		}
 		else if(this.ship_type.equals("BATTLESHIP")){
 			this.sunk = false;
 			this.s_size=4;
 			this.hp = 4;
 			this.c_hp = 2;
+			this.submerged = false;
 		}
 		else if(this.ship_type.equals("SUBMARINE")){
 			this.sunk = false;
@@ -69,10 +73,13 @@ public class Ship
 	}
 
 	//This function used to set the coordinates of the ship.
-	public void setCoordinates(int row, char col, boolean isVerticle)
+	public void setCoordinates(int row, char col, boolean isVerticle, boolean isSubmerged)
 	{
 		Square newsquare;
 		Square caps;
+		if(this.ship_type.equals("SUBMARINE")){
+			submerged = isSubmerged;
+		}
 		if(isVerticle)
 		{
 			if(this.ship_type.equals("MINESWEEPER"))
@@ -254,6 +261,10 @@ public class Ship
 
 	public char getcol() {
 		return this.col;
+	}
+
+	public boolean isSubmerged(){
+		return this.submerged;
 	}
 
 }
