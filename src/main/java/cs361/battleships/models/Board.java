@@ -63,7 +63,10 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
+
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean isSubmerged) {
+
+	
 
 		//Check if the new ship type already existed
 		for (int i = 0; i < ships.size(); i++) {
@@ -107,6 +110,7 @@ public class Board {
 			}
 		}
 		Ship nShip = new Ship(ship.shipName());
+
 		nShip.setCoordinates(x, y, isVertical, isSubmerged);
 		//Check if new ship's square has conflict with existed ship's square
 		if(!isSubmerged) {
@@ -120,6 +124,7 @@ public class Board {
 						{
 							return false;
 						}
+
 					}
 				}
 			}
