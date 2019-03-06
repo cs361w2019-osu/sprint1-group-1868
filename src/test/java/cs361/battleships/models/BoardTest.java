@@ -14,42 +14,47 @@ public class BoardTest {
         Board board_a = new Board();        //Enemy board
 
         //enemy board error setting --------------------------------------------------------------------
-        assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 10, 'J', true));     //To check if the place ship will throw error if in invalid position
-        assertFalse(board_a.placeShip(new Ship("BATTLESHIP"), 10, 'J', true));
-        assertFalse(board_a.placeShip(new Ship("DESTROYER"), 10, 'J', true));
-        assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 0, 'J', false));
-        assertFalse(board_a.placeShip(new Ship("BATTLESHIP"), 0, 'J', false));
-        assertFalse(board_a.placeShip(new Ship("DESTROYER"), 0, 'I', false));
+        assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 10, 'J', true, false));     //To check if the place ship will throw error if in invalid position
+        assertFalse(board_a.placeShip(new Ship("BATTLESHIP"), 10, 'J', true,  false));
+        assertFalse(board_a.placeShip(new Ship("DESTROYER"), 10, 'J', true,  false));
+        assertFalse(board_a.placeShip(new Ship("SUBMARINE"), 10, 'I', true,  false));
+        assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 0, 'J', false,  false));
+        assertFalse(board_a.placeShip(new Ship("BATTLESHIP"), 0, 'J', false,  false));
+        assertFalse(board_a.placeShip(new Ship("DESTROYER"), 0, 'I', false,  false));
+        assertFalse(board_a.placeShip(new Ship("SUBMARINE"), 0, 'I', false,  false));
         //---------------------------------------------------------------------------------------------
 
         //enemy board correct setting------------------------------------------------------------------
-        assertTrue(board_a.placeShip(new Ship("MINESWEEPER"), 2, 'B', true));       //To check if the place ship will correct insert the ship
+        assertTrue(board_a.placeShip(new Ship("MINESWEEPER"), 2, 'B', true,  false));       //To check if the place ship will correct insert the ship
         //error becuase square overlap
-        assertFalse(board_a.placeShip(new Ship("BATTLESHIP"), 2, 'B', false));
-        assertTrue(board_a.placeShip(new Ship("BATTLESHIP"), 6, 'D', true));
+        assertFalse(board_a.placeShip(new Ship("BATTLESHIP"), 2, 'B', false,  false));
+        assertTrue(board_a.placeShip(new Ship("BATTLESHIP"), 6, 'D', true,  false));
         //error becasue place same ship again
-        assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 7, 'H', false));
-        assertTrue(board_a.placeShip(new Ship("DESTROYER"), 7, 'H', true));
+        assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 7, 'H', false,  false));
+        assertTrue(board_a.placeShip(new Ship("DESTROYER"), 7, 'H', true,  false));
+        assertTrue(board_a.placeShip(new Ship("SUBMARINE"), 7, 'H', true,  false));
         //--------------------------------------------------------------------------------------------
 
 
         //player board error setting----------------------------------------------------------------------
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 10, 'J', true));     //To check if the place ship will throw error if in invalid position
-        assertFalse(board.placeShip(new Ship("BATTLESHIP"), 10, 'J', true));
-        assertFalse(board.placeShip(new Ship("DESTROYER"), 10, 'J', true));
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 0, 'J', false));
-        assertFalse(board.placeShip(new Ship("BATTLESHIP"), 0, 'J', false));
-        assertFalse(board.placeShip(new Ship("DESTROYER"), 0, 'I', false));
+        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 10, 'J', true,  false));     //To check if the place ship will throw error if in invalid position
+        assertFalse(board.placeShip(new Ship("BATTLESHIP"), 10, 'J', true,  false));
+        assertFalse(board.placeShip(new Ship("DESTROYER"), 10, 'J', true,  false));
+        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 0, 'J', false,  false));
+        assertFalse(board.placeShip(new Ship("BATTLESHIP"), 0, 'J', false,  false));
+        assertFalse(board.placeShip(new Ship("DESTROYER"), 0, 'I', false,  false));
+        assertFalse(board.placeShip(new Ship("SUBMARINE"), 0, 'I', false,  false));
         //------------------------------------------------------------------------------------------------
 
         //player board correct setting -------------------------------------------------------------------
-        assertTrue(board.placeShip(new Ship("MINESWEEPER"), 3, 'B', true));       //To check if the place ship will correct insert the ship
+        assertTrue(board.placeShip(new Ship("MINESWEEPER"), 3, 'B', true,  false));       //To check if the place ship will correct insert the ship
         //error becuase square overlap
-        assertFalse(board.placeShip(new Ship("BATTLESHIP"), 3, 'B', false));
-        assertTrue(board.placeShip(new Ship("BATTLESHIP"), 5, 'D', true));
+        assertFalse(board.placeShip(new Ship("BATTLESHIP"), 3, 'B', false,  false));
+        assertTrue(board.placeShip(new Ship("BATTLESHIP"), 5, 'D', true,  false));
         //error becasue place same ship again
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 7, 'H', false));
-        assertTrue(board.placeShip(new Ship("DESTROYER"), 4, 'H', false));
+        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 7, 'H', false,  false));
+        assertTrue(board.placeShip(new Ship("DESTROYER"), 4, 'H', false,  false));
+        assertTrue(board.placeShip(new Ship("SUBMARINE"), 4, 'H', false,  false));
         //----------------------------------------------------------------------------------------------
 
         //Check if ship was initialed correct
@@ -98,15 +103,17 @@ public class BoardTest {
         Game game = new Game();             //Test game
 
         //Place ship at wrong position
-        assertFalse(game.placeShip(new Ship("MINESWEEPER"),0, 'A', true));
-        assertFalse(game.placeShip(new Ship("BATTLESHIP"),0, 'A', true));
-        assertFalse(game.placeShip(new Ship("DESTROYER"),0, 'A', true));
+        assertFalse(game.placeShip(new Ship("MINESWEEPER"),0, 'A', true,  false));
+        assertFalse(game.placeShip(new Ship("BATTLESHIP"),0, 'A', true,  false));
+        assertFalse(game.placeShip(new Ship("DESTROYER"),0, 'A', true,  false));
+        assertFalse(game.placeShip(new Ship("SUBMARINE"),0, 'A', true,  false));
 
         //Place ship overlapped
-        assertTrue(game.placeShip(new Ship("MINESWEEPER"),3, 'A', false));
-        assertFalse(game.placeShip(new Ship("BATTLESHIP"),1, 'A', true));
-        assertTrue(game.placeShip(new Ship("DESTROYER"),5, 'C', true));
-        assertTrue(game.placeShip(new Ship("BATTLESHIP"),7, 'G', false));
+        assertTrue(game.placeShip(new Ship("MINESWEEPER"),3, 'A', false, false));
+        assertFalse(game.placeShip(new Ship("BATTLESHIP"),1, 'A', true,  false));
+        assertTrue(game.placeShip(new Ship("DESTROYER"),5, 'C', true,  false));
+        assertTrue(game.placeShip(new Ship("BATTLESHIP"),7, 'G', false,  false));
+        assertTrue(game.placeShip(new Ship("SUBMARINE"),7, 'G', false,  false));
 
         //Deploy sonar before sunk the first enemy ship
         assertFalse(game.sonarAttack(5,'G'));
