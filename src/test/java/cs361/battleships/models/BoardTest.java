@@ -20,8 +20,8 @@ public class BoardTest {
         assertFalse(board_a.placeShip(new Ship("SUBMARINE"), 10, 'I', true,  false));
         assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 0, 'J', false,  false));
         assertFalse(board_a.placeShip(new Ship("BATTLESHIP"), 0, 'J', false,  false));
-        assertFalse(board_a.placeShip(new Ship("DESTROYER"), 0, 'I', false,  false));
-        assertFalse(board_a.placeShip(new Ship("SUBMARINE"), 0, 'I', false,  false));
+        assertFalse(board_a.placeShip(new Ship("DESTROYER"), 0, 'J', false,  false));
+        assertFalse(board_a.placeShip(new Ship("SUBMARINE"), 0, 'J', false,  false));
         //---------------------------------------------------------------------------------------------
 
         //enemy board correct setting------------------------------------------------------------------
@@ -32,7 +32,7 @@ public class BoardTest {
         //error becasue place same ship again
         assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 7, 'H', false,  false));
         assertTrue(board_a.placeShip(new Ship("DESTROYER"), 7, 'H', true,  false));
-        assertTrue(board_a.placeShip(new Ship("SUBMARINE"), 7, 'H', true,  false));
+        assertTrue(board_a.placeShip(new Ship("SUBMARINE"), 5, 'D', true,  false));
         //--------------------------------------------------------------------------------------------
 
 
@@ -42,8 +42,8 @@ public class BoardTest {
         assertFalse(board.placeShip(new Ship("DESTROYER"), 10, 'J', true,  false));
         assertFalse(board.placeShip(new Ship("MINESWEEPER"), 0, 'J', false,  false));
         assertFalse(board.placeShip(new Ship("BATTLESHIP"), 0, 'J', false,  false));
-        assertFalse(board.placeShip(new Ship("DESTROYER"), 0, 'I', false,  false));
-        assertFalse(board.placeShip(new Ship("SUBMARINE"), 0, 'I', false,  false));
+        assertFalse(board.placeShip(new Ship("DESTROYER"), 0, 'J', false,  false));
+        assertFalse(board.placeShip(new Ship("SUBMARINE"), 0, 'J', false,  false));
         //------------------------------------------------------------------------------------------------
 
         //player board correct setting -------------------------------------------------------------------
@@ -54,7 +54,7 @@ public class BoardTest {
         //error becasue place same ship again
         assertFalse(board.placeShip(new Ship("MINESWEEPER"), 7, 'H', false,  false));
         assertTrue(board.placeShip(new Ship("DESTROYER"), 4, 'H', false,  false));
-        assertTrue(board.placeShip(new Ship("SUBMARINE"), 4, 'H', false,  false));
+        assertTrue(board.placeShip(new Ship("SUBMARINE"), 4, 'D', false,  false));
         //----------------------------------------------------------------------------------------------
 
         //Check if ship was initialed correct
@@ -110,7 +110,7 @@ public class BoardTest {
 
         //Place ship overlapped
         assertTrue(game.placeShip(new Ship("MINESWEEPER"),3, 'A', false, false));
-        assertFalse(game.placeShip(new Ship("BATTLESHIP"),1, 'A', true,  false));
+        assertTrue(game.placeShip(new Ship("BATTLESHIP"),4, 'C', true,  false));
         assertTrue(game.placeShip(new Ship("DESTROYER"),5, 'C', true,  false));
         assertTrue(game.placeShip(new Ship("BATTLESHIP"),7, 'G', false,  false));
         assertTrue(game.placeShip(new Ship("SUBMARINE"),7, 'G', false,  false));
