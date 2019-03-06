@@ -60,6 +60,12 @@ public class Ship
 			this.hp = 4;
 			this.c_hp = 2;
 		}
+		else if(this.ship_type.equals("SUBMARINE")){
+			this.sunk = false;
+			this.s_size=5;
+			this.hp = 5;
+			this.c_hp = 2;
+		}
 	}
 
 	//This function used to set the coordinates of the ship.
@@ -117,6 +123,22 @@ public class Ship
 					this.occupiedSquares.add(i, newsquare);
 				}
 			}
+			else if(ship_type.equals("SUBMARINE"))
+			{
+				this.s_size = 5;
+				this.row = row+3;
+				this.col = col;
+
+				for(int i = 0; i < 5; i++)
+				{
+					if(i == 3){
+						caps = new Square((row + i), col);
+						this.captainSquares.add(caps);
+					}
+					newsquare = new Square((row + i), col);
+					this.occupiedSquares.add(i, newsquare);
+				}
+			}
 		}
 		else
 		{
@@ -161,6 +183,22 @@ public class Ship
 				for(int i = 0; i < 4; i++)
 				{
 					if(i == 2){
+						caps = new Square(row, (char)((int) (col)+ i));
+						this.captainSquares.add(caps);
+					}
+					newsquare = new Square(row, (char)((int)(col) + i));
+					this.occupiedSquares.add(i, newsquare);
+				}
+			}
+			else if(this.ship_type.equals("SUBMARINE"))
+			{
+				this.s_size = 5;
+				this.row = row;
+				this.col = (char)((int)(col)+3);
+
+				for(int i = 0; i < 5; i++)
+				{
+					if(i == 3){
 						caps = new Square(row, (char)((int) (col)+ i));
 						this.captainSquares.add(caps);
 					}

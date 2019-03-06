@@ -89,7 +89,7 @@ function markHits(board, elementId, surrenderText) {
         if (attack.result === "MISS")
             classname = "miss";
         else if (attack.result === "CAPTAIN")
-            classname = "miss";
+            classname = "captain";
         else if (attack.result === "HIT")
             classname = "hit";
         else if (attack.result === "SUNK")
@@ -108,8 +108,8 @@ function redrawGrid() {
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
-    markHits(game.playersBoard, "player", "You fucked up!");
-    markHits(game.opponentsBoard, "opponent", "No");
+    markHits(game.playersBoard, "player", "Enemy won the game!");
+    markHits(game.opponentsBoard, "opponent", "Enemy lose!");
     if (game === undefined) {
         return;
     }
@@ -130,8 +130,8 @@ function redrawGrid() {
     document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0)-'A'.charCodeAt(0)].classList.remove("occupied");
     document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0)-'A'.charCodeAt(0)].classList.add("captain");
 }));
-    markHits(game.opponentsBoard, "opponent", "You won the game");
-    markHits(game.playersBoard, "player", "You lost the game");
+    markHits(game.opponentsBoard, "opponent", "You won the game!");
+    markHits(game.playersBoard, "player", "You lose!");
 }
 
 
@@ -166,7 +166,7 @@ function cellClick() {
             var para = document.createElement("P");
             var t = document.createTextNode("Captain it's not our territory!");
             para.appendChild(t);
-            document.getElementById("inf_table").appendChild(para);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
         }
         else
         {
@@ -176,12 +176,13 @@ function cellClick() {
                     var para = document.createElement("P");
                     var t = document.createTextNode("Succuessfully place your ship");
                     para.appendChild(t);
-                    document.getElementById("inf_table").appendChild(para);
+                    document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
                     game = data;
                     redrawGrid();
                     placedShips++;
                     if (placedShips == 3)
                     {
+
                         isSetup = false;
                         registerCellListener((e) => {});
                     }
@@ -191,19 +192,36 @@ function cellClick() {
                 var para = document.createElement("P");
                 var t = document.createTextNode("You have already placed this type of ship");
                 para.appendChild(t);
-                document.getElementById("inf_table").appendChild(para);
+                document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
            }
         }
     }
     else if (isSonar)
     {
-        sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
-            console.log("Sonar result received!");
-            console.log("Sonar data:")
-            console.log(data);
-            game = data;
-            redrawGrid();
-        })
+        if(parentTag == "player")
+        {
+            var para = document.createElement("P");
+            var t = document.createTextNode("You can't deploy the sonar pulse on your territory!");
+            para.appendChild(t);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
+        }
+        else
+        {
+            sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
+                console.log("Sonar result received!");
+                console.log("Sonar data:");
+
+                //Display the message on log window
+                var para = document.createElement("P");
+                var t = document.createTextNode("Sonar Pulse deployed at " + row + " " + col);
+                para.appendChild(t);
+                document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
+
+                console.log(data);
+                game = data;
+                redrawGrid();
+            })
+        }
     }
     else {
 
@@ -212,7 +230,7 @@ function cellClick() {
             var para = document.createElement("P");
             var t = document.createTextNode("You cant shot your own land");
             para.appendChild(t);
-            document.getElementById("inf_table").appendChild(para);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
         }
         else{
             sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
@@ -235,7 +253,7 @@ function sendXhr(method, url, data, handler) {
             var para = document.createElement("P");
             var t = document.createTextNode("Oops! You either click on wrong place or you place ship out of board.");
             para.appendChild(t);
-            document.getElementById("inf_table").appendChild(para);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -252,6 +270,7 @@ function place(size) {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
         vertical = document.getElementById("is_vertical").checked;
+        surface = document.getElementById("is_surface").checked;
         let table = document.getElementById("player");
         for (let i=0; i<size; i++) {
             let cell;
@@ -292,6 +311,10 @@ function initGame() {
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
         registerCellListener(place(4));
+    });
+    document.getElementById("place_submarine").addEventListener("click", function(e) {
+        shipType = "SUBMARINE";
+        registerCellListener(place(5));
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
