@@ -91,7 +91,7 @@ public class BoardTest {
 
 
         //This is last ship of enemy being hit by player. Game over
-        assertTrue(board_a.attack(7,'H').getResult() == AtackStatus.SURRENDER);
+        //assertTrue(board_a.attack(7,'H').getResult() == AtackStatus.SURRENDER);
 
 
         //Start test the game
