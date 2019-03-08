@@ -12,10 +12,11 @@ public class Ship
 	@JsonProperty private int s_size;
 	@JsonProperty private String ship_type;
 	@JsonProperty private boolean sunk;
+	@JsonProperty private boolean submerged;
 	@JsonProperty private int hp;
 	@JsonProperty private int c_hp;
 	@JsonProperty private int row;
-	@JsonProperty char col;
+	@JsonProperty private char col;
 	//This is the function to return the ship's name
 	public String shipName()
 	{
@@ -47,26 +48,38 @@ public class Ship
 			this.s_size=2;
 			this.hp = 2;
 			this.c_hp = 1;
+			this.submerged = false;
 		}
 		else if(this.ship_type.equals("DESTROYER")){
 			this.sunk = false;
 			this.s_size=3;
 			this.hp = 3;
 			this.c_hp = 2;
+			this.submerged = false;
 		}
 		else if(this.ship_type.equals("BATTLESHIP")){
 			this.sunk = false;
 			this.s_size=4;
 			this.hp = 4;
 			this.c_hp = 2;
+			this.submerged = false;
+		}
+		else if(this.ship_type.equals("SUBMARINE")){
+			this.sunk = false;
+			this.s_size=5;
+			this.hp = 5;
+			this.c_hp = 2;
 		}
 	}
 
 	//This function used to set the coordinates of the ship.
-	public void setCoordinates(int row, char col, boolean isVerticle)
+	public void setCoordinates(int row, char col, boolean isVerticle, boolean isSubmerged)
 	{
 		Square newsquare;
 		Square caps;
+		if(this.ship_type.equals("SUBMARINE")){
+			submerged = isSubmerged;
+		}
 		if(isVerticle)
 		{
 			if(this.ship_type.equals("MINESWEEPER"))
@@ -116,6 +129,24 @@ public class Ship
 					newsquare = new Square((row + i), col);
 					this.occupiedSquares.add(i, newsquare);
 				}
+			}
+			else if(ship_type.equals("SUBMARINE"))
+			{
+				this.s_size = 5;
+				this.row = row+3;
+				this.col = col;
+
+				for(int i = 0; i < 4; i++)
+				{
+					if(i == 3){
+						caps = new Square((row + i), col);
+						this.captainSquares.add(caps);
+					}
+					newsquare = new Square((row + i), col);
+					this.occupiedSquares.add(i, newsquare);
+				}
+				newsquare = new Square((row + 2), (char)((int)(col) + 1));
+				this.occupiedSquares.add(4, newsquare);
 			}
 		}
 		else
@@ -168,6 +199,24 @@ public class Ship
 					this.occupiedSquares.add(i, newsquare);
 				}
 			}
+			else if(this.ship_type.equals("SUBMARINE"))
+			{
+				this.s_size = 5;
+				this.row = row;
+				this.col = (char)((int)(col)+3);
+
+				for(int i = 0; i < 4; i++)
+				{
+					if(i == 3){
+						caps = new Square(row, (char)((int) (col)+ i));
+						this.captainSquares.add(caps);
+					}
+					newsquare = new Square(row, (char)((int)(col) + i));
+					this.occupiedSquares.add(i, newsquare);
+				}
+				newsquare = new Square(row-1, (char)((int)(col) + 2));
+				this.occupiedSquares.add(4, newsquare);
+			}
 		}
 	}
 
@@ -212,6 +261,10 @@ public class Ship
 
 	public char getcol() {
 		return this.col;
+	}
+
+	public boolean isSubmerged(){
+		return this.submerged;
 	}
 
 }

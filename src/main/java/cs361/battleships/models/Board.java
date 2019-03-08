@@ -63,7 +63,7 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
+	public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean isSubmerged) {
 
 		//Check if the new ship type already existed
 		for (int i = 0; i < ships.size(); i++) {
@@ -97,19 +97,29 @@ public class Board {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 3 < 0 || (int) (y) - 65 + 3 > 9) {
 					return false; }
 			}
+		} else if(ship.shipName().equals("SUBMARINE")) {
+			if (isVertical) {
+				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 8 || x + 3 > 10) {
+					return false; }
+			} else {
+				if (x < 2 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 3 > 9) {
+					return false; }
+			}
 		}
 		Ship nShip = new Ship(ship.shipName());
-		nShip.setCoordinates(x, y, isVertical);
+		nShip.setCoordinates(x, y, isVertical, isSubmerged);
 		//Check if new ship's square has conflict with existed ship's square
-		for(int i = 0; i < nShip.getOccupiedSquares().size(); i++)		//Read each grid of new ship
-		{
-			for(int j = 0; j < this.ships.size(); j++)		//Read each existed ships
+		if(!isSubmerged) {
+			for (int i = 0; i < nShip.getOccupiedSquares().size(); i++)        //Read each grid of new ship
 			{
-				for(int k = 0; k < this.ships.get(j).getOccupiedSquares().size(); k++)		//Read each ship's grid
+				for (int j = 0; j < this.ships.size(); j++)        //Read each existed ships
 				{
-					if(nShip.getOccupiedSquares().get(i).getRow() == this.ships.get(j).getOccupiedSquares().get(k).getRow() && nShip.getOccupiedSquares().get(i).getColumn() == this.ships.get(j).getOccupiedSquares().get(k).getColumn())	//If conflict
+					for (int k = 0; k < this.ships.get(j).getOccupiedSquares().size(); k++)        //Read each ship's grid
 					{
-						return false;
+						if (nShip.getOccupiedSquares().get(i).getRow() == this.ships.get(j).getOccupiedSquares().get(k).getRow() && nShip.getOccupiedSquares().get(i).getColumn() == this.ships.get(j).getOccupiedSquares().get(k).getColumn())    //If conflict
+						{
+							return false;
+						}
 					}
 				}
 			}
@@ -191,6 +201,9 @@ public class Board {
 			for(int i = 0; i < this.ships.size(); i++) {
 				//Check each square of each ships one by one
 				for(int j = 0; j < this.ships.get(i).getOccupiedSquares().size(); j++) {
+					if(this.ships.get(i).shipName().equals("SUBMARINE") && this.ships.get(i).isSubmerged()){
+						break;
+					}
 					//This means if the attack coordinates match the ship's coordinates, the ship been hit
 					if(this.ships.get(i).getOccupiedSquares().get(j).getRow()-1 == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y ) {
 						if(this.ships.get(i).getrow() == x+1 && this.ships.get(i).getcol() == y){
@@ -230,10 +243,12 @@ public class Board {
 							//Check if the ship been hit to sunk
 							if(this.ships.get(i).returnHp() == 0) {
 								result = AtackStatus.SUNK;
-								this.ships.get(i).shipSunk();        //Set the ship to sunk
+								this.ships.get(i).shipSunk();       //Set the ship to sunk
 							}
 						}
+
 					}
+
 				}
 				//Check if the ship sunk
 				if(this.ships.get(i).isSunk()) {
@@ -242,7 +257,7 @@ public class Board {
 			}
 
 			//Check if the player surrender after the shot, if the player surrender, then change the attack result to SURRENDER.
-			if(sunk_num == 3) {
+			if(sunk_num == 4) {
 				result = AtackStatus.SURRENDER;
 			}
 

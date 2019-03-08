@@ -4,6 +4,7 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var submerged;
 var type1 = false; //Minesweeper
 var type2 = false; //Destroyer
 var type3 = false; //BattleShip
@@ -172,7 +173,10 @@ function cellClick() {
         {
             pass = true;
             if(pass == true){
-                sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+                if(shipType == "SUBMARINE"){
+                    submerged = document.getElementById("is_submerged").checked;
+                }
+                sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical, isSubmerged: submerged}, function(data) {
                     var para = document.createElement("P");
                     var t = document.createTextNode("Succuessfully place your ship");
                     para.appendChild(t);
@@ -180,7 +184,7 @@ function cellClick() {
                     game = data;
                     redrawGrid();
                     placedShips++;
-                    if (placedShips == 3)
+                    if (placedShips == 4)
                     {
 
                         isSetup = false;
@@ -301,15 +305,22 @@ function initGame() {
     });
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
+        submerged = false;
         registerCellListener(place(2));
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
         shipType = "DESTROYER";
+        submerged = false;
         registerCellListener(place(3));
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
+        submerged = false;
         registerCellListener(place(4));
+    });
+    document.getElementById("place_submarine").addEventListener("click", function(e) {
+        shipType = "SUBMARINE";
+        registerCellListener(place(5));
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
