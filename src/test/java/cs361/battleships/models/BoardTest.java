@@ -21,6 +21,7 @@ public class BoardTest {
         assertFalse(board_a.placeShip(new Ship("BATTLESHIP"), 0, 'J', false, false));
         assertFalse(board_a.placeShip(new Ship("DESTROYER"), 0, 'I', false, false));
         assertFalse(board_a.placeShip(new Ship("SUBMARINE"), 0, 'J', true, true));
+
         //---------------------------------------------------------------------------------------------
 
         //enemy board correct setting------------------------------------------------------------------
@@ -31,10 +32,12 @@ public class BoardTest {
         //error becasue place same ship again
         assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 7, 'H', false, false));
         assertTrue(board_a.placeShip(new Ship("DESTROYER"), 7, 'H', true, false));
+
         //cant place same spot with Destroyer because submarine is not submerged
         assertFalse(board_a.placeShip(new Ship("SUBMARINE"), 7, 'H', true, false));
         //can place submarine because submerged
         assertTrue(board_a.placeShip(new Ship("SUBMARINE"), 7, 'H', true, true));
+
         //--------------------------------------------------------------------------------------------
 
 
@@ -97,8 +100,6 @@ public class BoardTest {
 
         //This is last ship of enemy being hit by player. Game over
         //assertTrue(board_a.attack(7,'H').getResult() == AtackStatus.SURRENDER);
-
-
 
 
 

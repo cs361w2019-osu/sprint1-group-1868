@@ -200,6 +200,7 @@ public class Board {
 			for(int i = 0; i < this.ships.size(); i++) {
 				//Check each square of each ships one by one
 				for(int j = 0; j < this.ships.get(i).getOccupiedSquares().size(); j++) {
+
 					if(this.ships.get(i).shipName().equals("SUBMARINE") && this.ships.get(i).isSubmerged() && switch_sl == false) {
 						break;
 					}
