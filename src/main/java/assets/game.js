@@ -1,12 +1,12 @@
 var isSetup = true;
 var isSonar = false;
+var isLaser = false;
 var placedShips = 0;
 var game;
 var shipType;
 var vertical;
-var type1 = false; //Minesweeper
-var type2 = false; //Destroyer
-var type3 = false; //BattleShip
+var submerged;
+
 var pass = false;
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -90,8 +90,9 @@ function markHits(board, elementId, surrenderText) {
             classname = "miss";
         else if (attack.result === "CAPTAIN")
             classname = "captain";
-        else if (attack.result === "HIT")
+        else if (attack.result === "HIT") {
             classname = "hit";
+        }
         else if (attack.result === "SUNK")
             classname = "hit";
         else if (attack.result === "SURRENDER")
@@ -108,8 +109,8 @@ function redrawGrid() {
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
-    markHits(game.playersBoard, "player", "You fucked up!");
-    markHits(game.opponentsBoard, "opponent", "No");
+    markHits(game.playersBoard, "player", "Enemy won the game!");
+    markHits(game.opponentsBoard, "opponent", "Enemy lose!");
     if (game === undefined) {
         return;
     }
@@ -124,14 +125,16 @@ function redrawGrid() {
         //
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
+
     game.playersBoard.ships.forEach((ship) => ship.captainSquares.forEach(square => {
 
         console.log(square.row-1, square.column.charCodeAt(0));
     document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0)-'A'.charCodeAt(0)].classList.remove("occupied");
     document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0)-'A'.charCodeAt(0)].classList.add("captain");
 }));
-    markHits(game.opponentsBoard, "opponent", "You won the game");
-    markHits(game.playersBoard, "player", "You lost the game");
+    markHits(game.opponentsBoard, "opponent", "You won the game!");
+    markHits(game.playersBoard, "player", "You lose!");
+
 }
 
 
@@ -166,23 +169,27 @@ function cellClick() {
             var para = document.createElement("P");
             var t = document.createTextNode("Captain it's not our territory!");
             para.appendChild(t);
-            document.getElementById("inf_table").appendChild(para);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
         }
         else
         {
             pass = true;
             if(pass == true){
-                sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+                if(shipType == "SUBMARINE"){
+                    submerged = document.getElementById("is_submerged").checked;
+                }
+                sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical, isSubmerged: submerged}, function(data) {
                     var para = document.createElement("P");
                     var t = document.createTextNode("Succuessfully place your ship");
                     para.appendChild(t);
-                    document.getElementById("inf_table").appendChild(para);
+                    document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
                     game = data;
+                    console.log("redraw problem");
                     redrawGrid();
+                    console.log("Not redraw problem ");
                     placedShips++;
-                    if (placedShips == 3)
+                    if (placedShips == 4)
                     {
-
                         isSetup = false;
                         registerCellListener((e) => {});
                     }
@@ -192,19 +199,56 @@ function cellClick() {
                 var para = document.createElement("P");
                 var t = document.createTextNode("You have already placed this type of ship");
                 para.appendChild(t);
-                document.getElementById("inf_table").appendChild(para);
+                document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
            }
         }
     }
+    else if(isLaser)
+    {
+        console.log("Using space laser to attack");
+            //game.playersBoard.setSwitch(true);
+        if (parentTag == "player"){
+
+            var para = document.createElement("P");
+            var t = document.createTextNode("You cant shot your own land by using space laser");
+            para.appendChild(t);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
+        }
+        else{
+            sendXhr("POST", "/laser", {game: game, x: row, y: col}, function(data) {
+                console.log("Laser attack result received!");
+                game = data;
+                redrawGrid();
+            })
+        }
+        //isLaser = false;
+    }
     else if (isSonar)
     {
-        sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
-            console.log("Sonar result received!");
-            console.log("Sonar data:")
-            console.log(data);
-            game = data;
-            redrawGrid();
-        })
+        if(parentTag == "player")
+        {
+            var para = document.createElement("P");
+            var t = document.createTextNode("You can't deploy the sonar pulse on your territory!");
+            para.appendChild(t);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
+        }
+        else
+        {
+            sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
+                console.log("Sonar result received!");
+                console.log("Sonar data:");
+
+                //Display the message on log window
+                var para = document.createElement("P");
+                var t = document.createTextNode("Sonar Pulse deployed at " + row + " " + col);
+                para.appendChild(t);
+                document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
+
+                console.log(data);
+                game = data;
+                redrawGrid();
+            })
+        }
     }
     else {
 
@@ -213,7 +257,7 @@ function cellClick() {
             var para = document.createElement("P");
             var t = document.createTextNode("You cant shot your own land");
             para.appendChild(t);
-            document.getElementById("inf_table").appendChild(para);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
         }
         else{
             sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
@@ -236,7 +280,7 @@ function sendXhr(method, url, data, handler) {
             var para = document.createElement("P");
             var t = document.createTextNode("Oops! You either click on wrong place or you place ship out of board.");
             para.appendChild(t);
-            document.getElementById("inf_table").appendChild(para);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -278,21 +322,34 @@ function place(size) {
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
+    document.getElementById("place_space_laser").addEventListener("click", function(e) {
+        isLaser = true;
+        isSonar = false;
+        registerCellListener(place(1));
+    });
     document.getElementById("place_sonar_pulse").addEventListener("click", function(e) {
         isSonar = true;
+        isLaser = false;
         registerCellListener(place(1));
     });
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
+        submerged = false;
         registerCellListener(place(2));
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
         shipType = "DESTROYER";
+        submerged = false;
         registerCellListener(place(3));
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
+        submerged = false;
         registerCellListener(place(4));
+    });
+    document.getElementById("place_submarine").addEventListener("click", function(e) {
+        shipType = "SUBMARINE";
+        registerCellListener(place(5));
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
