@@ -20,6 +20,8 @@ public class BoardTest {
         assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 0, 'J', false, false));
         assertFalse(board_a.placeShip(new Ship("BATTLESHIP"), 0, 'J', false, false));
         assertFalse(board_a.placeShip(new Ship("DESTROYER"), 0, 'I', false, false));
+        assertFalse(board_a.placeShip(new Ship("SUBMARINE"), 0, 'J', true, true));
+
         //---------------------------------------------------------------------------------------------
 
         //enemy board correct setting------------------------------------------------------------------
@@ -30,6 +32,12 @@ public class BoardTest {
         //error becasue place same ship again
         assertFalse(board_a.placeShip(new Ship("MINESWEEPER"), 7, 'H', false, false));
         assertTrue(board_a.placeShip(new Ship("DESTROYER"), 7, 'H', true, false));
+
+        //cant place same spot with Destroyer because submarine is not submerged
+        assertFalse(board_a.placeShip(new Ship("SUBMARINE"), 7, 'H', true, false));
+        //can place submarine because submerged
+        assertTrue(board_a.placeShip(new Ship("SUBMARINE"), 7, 'H', true, true));
+
         //--------------------------------------------------------------------------------------------
 
 
@@ -94,22 +102,6 @@ public class BoardTest {
         //assertTrue(board_a.attack(7,'H').getResult() == AtackStatus.SURRENDER);
 
 
-        //Start test the game
-        Game game = new Game();             //Test game
-
-        //Place ship at wrong position
-        assertFalse(game.placeShip(new Ship("MINESWEEPER"),0, 'A', true, false));
-        assertFalse(game.placeShip(new Ship("BATTLESHIP"),0, 'A', true, false));
-        assertFalse(game.placeShip(new Ship("DESTROYER"),0, 'A', true, false));
-
-        //Place ship overlapped
-        assertTrue(game.placeShip(new Ship("MINESWEEPER"),3, 'A', false, false));
-        assertFalse(game.placeShip(new Ship("BATTLESHIP"),1, 'A', true, false));
-        assertTrue(game.placeShip(new Ship("DESTROYER"),5, 'C', true, false));
-        assertTrue(game.placeShip(new Ship("BATTLESHIP"),7, 'G', false, false));
-
-        //Deploy sonar before sunk the first enemy ship
-        assertFalse(game.sonarAttack(5,'G'));
 
 
     }

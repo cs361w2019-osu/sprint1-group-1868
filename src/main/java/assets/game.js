@@ -1,13 +1,12 @@
 var isSetup = true;
 var isSonar = false;
+var isLaser = false;
 var placedShips = 0;
 var game;
 var shipType;
 var vertical;
 var submerged;
-var type1 = false; //Minesweeper
-var type2 = false; //Destroyer
-var type3 = false; //BattleShip
+
 var pass = false;
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -91,8 +90,9 @@ function markHits(board, elementId, surrenderText) {
             classname = "miss";
         else if (attack.result === "CAPTAIN")
             classname = "captain";
-        else if (attack.result === "HIT")
+        else if (attack.result === "HIT") {
             classname = "hit";
+        }
         else if (attack.result === "SUNK")
             classname = "hit";
         else if (attack.result === "SURRENDER")
@@ -125,6 +125,7 @@ function redrawGrid() {
         //
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
+
     game.playersBoard.ships.forEach((ship) => ship.captainSquares.forEach(square => {
 
         console.log(square.row-1, square.column.charCodeAt(0));
@@ -133,6 +134,7 @@ function redrawGrid() {
 }));
     markHits(game.opponentsBoard, "opponent", "You won the game!");
     markHits(game.playersBoard, "player", "You lose!");
+
 }
 
 
@@ -182,11 +184,12 @@ function cellClick() {
                     para.appendChild(t);
                     document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
                     game = data;
+                    console.log("redraw problem");
                     redrawGrid();
+                    console.log("Not redraw problem ");
                     placedShips++;
                     if (placedShips == 4)
                     {
-
                         isSetup = false;
                         registerCellListener((e) => {});
                     }
@@ -199,6 +202,26 @@ function cellClick() {
                 document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
            }
         }
+    }
+    else if(isLaser)
+    {
+        console.log("Using space laser to attack");
+            //game.playersBoard.setSwitch(true);
+        if (parentTag == "player"){
+
+            var para = document.createElement("P");
+            var t = document.createTextNode("You cant shot your own land by using space laser");
+            para.appendChild(t);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
+        }
+        else{
+            sendXhr("POST", "/laser", {game: game, x: row, y: col}, function(data) {
+                console.log("Laser attack result received!");
+                game = data;
+                redrawGrid();
+            })
+        }
+        //isLaser = false;
     }
     else if (isSonar)
     {
@@ -299,8 +322,14 @@ function place(size) {
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
+    document.getElementById("place_space_laser").addEventListener("click", function(e) {
+        isLaser = true;
+        isSonar = false;
+        registerCellListener(place(1));
+    });
     document.getElementById("place_sonar_pulse").addEventListener("click", function(e) {
         isSonar = true;
+        isLaser = false;
         registerCellListener(place(1));
     });
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {

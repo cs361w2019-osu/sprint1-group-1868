@@ -44,6 +44,7 @@ public class Game {
 
         System.out.println("==== Player attack!");
         System.out.println("** Player's fire coordinate: " + x + " " + y);
+        //boolean st = playersBoard.getSwitch();
         Result playerAttack = opponentsBoard.attack(x-1, y);
         if (playerAttack.getResult() == INVALID) {
             System.out.println("** Fire invalid! Return false to client!");
@@ -57,6 +58,7 @@ public class Game {
         do {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
+            //st = opponentsBoard.getSwitch();
             randX = randRow();
             randY = randCol();
             opponentAttackResult = playersBoard.attack(randX, randY);
@@ -70,14 +72,14 @@ public class Game {
     private boolean checkSonar(int x, char y)
     {
         //First check if the game already start
-        if(opponentsBoard.getShips().size() != 3)
+        if(opponentsBoard.getShips().size() != 4)
         {
             System.out.println("** Sonar Attack check, not gaming phase!");
             return false;
         }
         //Second check if the sonar attack could deploy on the board
         int sunk_num = 0;
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 4; i++)
         {
             if(opponentsBoard.getShips().get(i).isSunk())
             {
@@ -93,7 +95,7 @@ public class Game {
         if(x<1 || x>10 || (int)(y) < 65 || (int)(y) > 74)
             return false;
         //Fourth check if the sonar already used twice
-        if(this.playersBoard.getSonar_pulse().size() == 2)
+        if(this.playersBoard.getSonar_pulse().size() == 10)
             return false;
         //If all pass, return true
         return true;
@@ -112,6 +114,49 @@ public class Game {
         return false;
     }
 
+    public boolean laserAttack(int x, char y){
+
+        if(checkLaser(x, y))
+        {
+            System.out.println("==== Laser Attack!");
+            this.opponentsBoard.setSwtich(true);
+            this.opponentsBoard.attack(x-1,y);
+            System.out.println("** Laser Attack Succeed!");
+            return true;
+        }
+        System.out.println("** Sonar Attack Fail!");
+        return false;
+    }
+    private boolean checkLaser(int x, char y)
+    {
+        //First check if the game already start
+        if(opponentsBoard.getShips().size() != 4)
+        {
+            System.out.println("** laser Attack check, not gaming phase!");
+            return false;
+        }
+        //Second check if the sonar attack could deploy on the board
+        int sunk = 0;
+        for(int i = 0; i < 4; i++)
+        {
+            if(opponentsBoard.getShips().get(i).isSunk())
+            {
+                sunk++;
+            }
+        }
+        if(sunk == 0)
+        {
+            System.out.println("** laser Attack check, not sinking yet!");
+            return false;
+        }
+        //Third check if the coordinate in the board, is this really useful?
+        if(x<1 || x>10 || (int)(y) < 65 || (int)(y) > 74)
+            return false;
+
+
+        //If all pass, return true
+        return true;
+    }
     private char randCol()
     {
         Random rand = new Random();
