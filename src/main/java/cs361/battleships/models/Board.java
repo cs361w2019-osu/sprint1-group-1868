@@ -12,7 +12,7 @@ public class Board {
 	@JsonProperty private List<Result> attacks;
 	@JsonProperty private List<Square> sonar_pulse;         //This is used to store the sonar pulse's coordinate
 	private int ship_num = 0;
-
+	private boolean switch_sl = false;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -63,22 +63,16 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		//Check if the new ship type already existed
+	public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean isSubmerged) {
 
+		//Check if the new ship type already existed
 		for (int i = 0; i < ships.size(); i++) {
 			if (ships.get(i).shipName().equals(ship.shipName())) {
-
-				//for(int i = 0; i < ships.size(); i++)
-				{
-					//		if(ships.get(i).shipName().equals(ship.shipName()))
-					//	{
-
-					return false;
-				}
+				return false;
 			}
 		}
 
+		//Check if all grid of the ship
 		if (ship.shipName().equals("MINESWEEPER")) {
 			if (isVertical) {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || x + 1 > 10) {
@@ -103,9 +97,33 @@ public class Board {
 				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 3 < 0 || (int) (y) - 65 + 3 > 9) {
 					return false; }
 			}
+		} else if(ship.shipName().equals("SUBMARINE")) {
+			if (isVertical) {
+				if (x < 1 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 8 || x + 3 > 10) {
+					return false; }
+			} else {
+				if (x < 2 || x > 10 || (int) (y) - 65 < 0 || (int) (y) - 65 > 9 || (int) (y) - 65 + 3 > 9) {
+					return false; }
+			}
 		}
 		Ship nShip = new Ship(ship.shipName());
-		nShip.setCoordinates(x, y, isVertical);
+		nShip.setCoordinates(x, y, isVertical, isSubmerged);
+		//Check if new ship's square has conflict with existed ship's square
+		if(!isSubmerged) {
+			for (int i = 0; i < nShip.getOccupiedSquares().size(); i++)        //Read each grid of new ship
+			{
+				for (int j = 0; j < this.ships.size(); j++)        //Read each existed ships
+				{
+					for (int k = 0; k < this.ships.get(j).getOccupiedSquares().size(); k++)        //Read each ship's grid
+					{
+						if (nShip.getOccupiedSquares().get(i).getRow() == this.ships.get(j).getOccupiedSquares().get(k).getRow() && nShip.getOccupiedSquares().get(i).getColumn() == this.ships.get(j).getOccupiedSquares().get(k).getColumn())    //If conflict
+						{
+							return false;
+						}
+					}
+				}
+			}
+		}
 		this.ships.add(this.ship_num, nShip);
 		this.ship_num++;
 		return true;
@@ -124,7 +142,7 @@ public class Board {
 		{
 			//Check if already hit here
 			for(int i = 0; i < this.attacks.size(); i++) {
-				if (this.attacks.get(i).getLocation().getRow() == (x+1) && this.attacks.get(i).getLocation().getColumn() == y) {
+				if (this.attacks.get(i).getLocation().getRow() == (x+1) && this.attacks.get(i).getLocation().getColumn() == y ) {
 				    //Check if this is the captain quarter
 					for(int j=0; j < this.ships.size(); j++){
 						if(x+1 == this.ships.get(j).getrow() && y == this.ships.get(j).getcol() && this.ships.get(j).returnCHp() > 0)
@@ -157,8 +175,7 @@ public class Board {
 	* 				4. Check if the shot has made current player surrender
 	* 				5. Return the hit status
 	 */
-	public Result attack(int x, char y)
-	{
+	public Result attack(int x, char y)	{
 
 		//Initial the send back result
 		Result currentresult = new Result();
@@ -179,12 +196,15 @@ public class Board {
 
 			System.out.println("==== Checking fire result!");
 
-			//Check all three ships one by one for the shot result
+			//Check all four ships one by one for the shot result
 			for(int i = 0; i < this.ships.size(); i++) {
 				//Check each square of each ships one by one
 				for(int j = 0; j < this.ships.get(i).getOccupiedSquares().size(); j++) {
+					if(this.ships.get(i).shipName().equals("SUBMARINE") && this.ships.get(i).isSubmerged() && switch_sl == false) {
+						break;
+					}
 					//This means if the attack coordinates match the ship's coordinates, the ship been hit
-					if(this.ships.get(i).getOccupiedSquares().get(j).getRow()-1 == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y ) {
+					else if(this.ships.get(i).getOccupiedSquares().get(j).getRow()-1 == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y ) {
 						if(this.ships.get(i).getrow() == x+1 && this.ships.get(i).getcol() == y){
 							result = AtackStatus.CAPTAIN;
 							this.ships.get(i).hitC();
@@ -222,10 +242,12 @@ public class Board {
 							//Check if the ship been hit to sunk
 							if(this.ships.get(i).returnHp() == 0) {
 								result = AtackStatus.SUNK;
-								this.ships.get(i).shipSunk();        //Set the ship to sunk
+								this.ships.get(i).shipSunk();       //Set the ship to sunk
 							}
 						}
+
 					}
+
 				}
 				//Check if the ship sunk
 				if(this.ships.get(i).isSunk()) {
@@ -234,7 +256,7 @@ public class Board {
 			}
 
 			//Check if the player surrender after the shot, if the player surrender, then change the attack result to SURRENDER.
-			if(sunk_num == 3) {
+			if(sunk_num == 4) {
 				result = AtackStatus.SURRENDER;
 			}
 
@@ -263,9 +285,9 @@ public class Board {
 	public List<Ship> getShips()
 	{
 		return this.ships;
-
 	}
-
+    //public boolean getSwitch(){ return this.switch_sl; }
+    public void setSwtich(boolean b){ this.switch_sl = b; }
 	public void setShips(List<Ship> ships)
 	{
 		this.ships = ships;
