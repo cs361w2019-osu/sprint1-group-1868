@@ -56,9 +56,27 @@ public class ApplicationController {
     {
         Game game = g.getGame();
         boolean result = game.laserAttack(g.getActionRow(), g.getActionColumn());
-        if (result) {
+        if (result)
+        {
             return Results.json().render(game);
-        } else {
+        }
+        else
+        {
+            return Results.badRequest();
+        }
+    }
+
+    public Result move(Context context, AttackGameAction g)
+    {
+        Game game = g.getGame();
+        int direction = g.getActionRow();
+        boolean result = game.moveFleet(direction);
+        if(result)
+        {
+            return Results.json().render(game);
+        }
+        else
+        {
             return Results.badRequest();
         }
     }
