@@ -60,6 +60,18 @@ public class BoardTest {
         assertTrue(board.placeShip(new Ship("DESTROYER"), 4, 'H', false, false));
         //----------------------------------------------------------------------------------------------
 
+        //Check if the ship could move collapse
+        boolean[] result = board_a.move(1);
+        assertTrue(result[0] && result[1] && result[2] && result[3]);
+
+        //Check if could move out of board
+        result = board_a.move(1);
+        assertFalse(result[0] && result[1] && result[2] && result[3]);
+
+        //Check if could move to other direction
+        result = board_a.move(3);
+        assertTrue(result[0] && result[1] && result[2] && result[3]);
+
         //Check if ship was initialed correct
         Ship testShip = new Ship();
         assertFalse(testShip.isSunk() == true);
@@ -87,9 +99,9 @@ public class BoardTest {
         //player sunk one enemy'ship by only hitting twice captain quarter
         assertTrue(board_a.attack(7,'D').getResult() == AtackStatus.SUNK);
         //If player trying to hit the cq more than twice
-        assertTrue(board_a.attack(7,'D').getResult() == AtackStatus.INVALID);
+        assertTrue(board_a.attack(7,'D').getResult() == AtackStatus.HIT);
         //If player trying to hit a square belong to a cq sunk ship
-        assertTrue(board_a.attack(6,'D').getResult() == AtackStatus.INVALID);
+        assertTrue(board_a.attack(6,'D').getResult() == AtackStatus.HIT);
         //enemy sunk one player'ship by only hitting twice captain quarter
         assertTrue(board.attack(6,'D').getResult() == AtackStatus.SUNK);
 
@@ -101,7 +113,14 @@ public class BoardTest {
         //This is last ship of enemy being hit by player. Game over
         //assertTrue(board_a.attack(7,'H').getResult() == AtackStatus.SURRENDER);
 
+        Game test = new Game();
+        test.placeShip(new Ship("MINESWEEPER"), 2, 'D', false, false);
+        test.placeShip(new Ship("DESTROYER"), 5, 'D', false, false);
+        test.placeShip(new Ship("BATTLESHIP"), 7, 'D', false, false);
+        test.placeShip(new Ship("SUBMARINE"), 8, 'F', false, false);
 
+        //If player trying to move the fleet before sunk two opponent's ship
+        assertFalse(test.moveFleet(1));
 
 
     }
