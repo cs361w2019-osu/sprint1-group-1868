@@ -6,6 +6,7 @@ var game;
 var shipType;
 var vertical;
 var submerged;
+
 var pass = false;
 var direction = 0;
 
