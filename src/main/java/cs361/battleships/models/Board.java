@@ -12,7 +12,7 @@ public class Board {
 	@JsonProperty private List<Result> attacks;
 	@JsonProperty private List<Square> sonar_pulse;         //This is used to store the sonar pulse's coordinate
 	private int ship_num = 0;
-	private boolean switch_sl = false;
+
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -142,17 +142,22 @@ public class Board {
 		{
 			//Check if already hit here
 			for(int i = 0; i < this.attacks.size(); i++) {
-				if (this.attacks.get(i).getLocation().getRow() == (x+1) && this.attacks.get(i).getLocation().getColumn() == y ) {
+				if (this.attacks.get(i).getLocation().getRow() == (x+1) && this.attacks.get(i).getLocation().getColumn() == y)		//If already hit here
+				{
 				    //Check if this is the captain quarter
+					/*
 					for(int j=0; j < this.ships.size(); j++){
 						if(x+1 == this.ships.get(j).getrow() && y == this.ships.get(j).getcol() && this.ships.get(j).returnCHp() > 0)
 						{
 							return true;
 						}
 					}
-
 					System.out.println("** Fire coordinate not valid!");
 					return false;
+					*/
+
+					//Update the attack by delete old attack
+					this.attacks.remove(i);
 				}
 			}
 		}
@@ -175,7 +180,8 @@ public class Board {
 	* 				4. Check if the shot has made current player surrender
 	* 				5. Return the hit status
 	 */
-	public Result attack(int x, char y)	{
+	public Result attack(int x, char y)
+	{
 
 		//Initial the send back result
 		Result currentresult = new Result();
@@ -196,24 +202,24 @@ public class Board {
 
 			System.out.println("==== Checking fire result!");
 
-			//Check all four ships one by one for the shot result
+			//Check all three ships one by one for the shot result
 			for(int i = 0; i < this.ships.size(); i++) {
 				//Check each square of each ships one by one
 				for(int j = 0; j < this.ships.get(i).getOccupiedSquares().size(); j++) {
-
-					if(this.ships.get(i).shipName().equals("SUBMARINE") && this.ships.get(i).isSubmerged() && switch_sl == false) {
+					if(this.ships.get(i).shipName().equals("SUBMARINE") && this.ships.get(i).isSubmerged()){
 						break;
 					}
 					//This means if the attack coordinates match the ship's coordinates, the ship been hit
-					else if(this.ships.get(i).getOccupiedSquares().get(j).getRow()-1 == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y ) {
+					if(this.ships.get(i).getOccupiedSquares().get(j).getRow()-1 == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y ) {
 						if(this.ships.get(i).getrow() == x+1 && this.ships.get(i).getcol() == y){
 							result = AtackStatus.CAPTAIN;
 							this.ships.get(i).hitC();
 
-							if(this.ships.get(i).returnCHp() == 0) {
-								result = AtackStatus.SUNK;
+							if(this.ships.get(i).returnCHp() == 0) 		//If the captain square been destroyed
+							{
+								result = AtackStatus.SUNK;		//Set the ship to sunk
 								this.ships.get(i).shipSunk();
-								for(int k = 0; k < this.ships.get(i).getOccupiedSquares().size(); k ++)
+								for(int k = 0; k < this.ships.get(i).getOccupiedSquares().size(); k ++)		//Check if ship's square is sunk
 								{
 										int checkFlag = 0;
 										for(int l = 0; l < attacks.size(); l++)
@@ -223,7 +229,7 @@ public class Board {
 												checkFlag = 1;
 											}
 										}
-										if(checkFlag == 0)
+										if(checkFlag == 0)		//If the ship didn't been hit
 										{
 											Square newSquare = new Square();
 											newSquare.setRow(this.ships.get(i).getOccupiedSquares().get(k).getRow());
@@ -236,7 +242,6 @@ public class Board {
 									}
 								}
 						}
-
 						else{
 							result = AtackStatus.HIT;
 							this.ships.get(i).hit();
@@ -246,9 +251,7 @@ public class Board {
 								this.ships.get(i).shipSunk();       //Set the ship to sunk
 							}
 						}
-
 					}
-
 				}
 				//Check if the ship sunk
 				if(this.ships.get(i).isSunk()) {
@@ -271,7 +274,6 @@ public class Board {
 
 
 		}
-
 		else
         {
 			currentresult.setResult(AtackStatus.INVALID);
@@ -286,19 +288,35 @@ public class Board {
 	public List<Ship> getShips()
 	{
 		return this.ships;
+
 	}
-    //public boolean getSwitch(){ return this.switch_sl; }
-    public void setSwtich(boolean b){ this.switch_sl = b; }
+
+	public boolean[] move(int direction)
+	{
+		boolean[] fg = {false, false, false, false};
+		for(int i = 0; i < 4; i++)
+		{
+			if(this.ships.get(i).isSunk() == true)		//If the ship was sunk
+			{
+				continue;		//Pass his ship
+			}
+			fg[i] = this.ships.get(i).move(direction);
+		}
+		return fg;
+	}
+
 	public void setShips(List<Ship> ships)
 	{
 		this.ships = ships;
 	}
 
-	public List<Result> getAttacks(){
+	public List<Result> getAttacks()
+	{
 		return this.attacks;
 	}
 	
-	public void setAttacks(List<Result> attacks){
+	public void setAttacks(List<Result> attacks)
+	{
 		this.attacks = attacks;
 	}
 }
