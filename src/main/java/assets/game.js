@@ -6,8 +6,9 @@ var game;
 var shipType;
 var vertical;
 var submerged;
-
 var pass = false;
+var direction = 0;
+
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
         let row = document.createElement('tr');
@@ -90,9 +91,8 @@ function markHits(board, elementId, surrenderText) {
             classname = "miss";
         else if (attack.result === "CAPTAIN")
             classname = "captain";
-        else if (attack.result === "HIT") {
+        else if (attack.result === "HIT")
             classname = "hit";
-        }
         else if (attack.result === "SUNK")
             classname = "hit";
         else if (attack.result === "SURRENDER")
@@ -104,6 +104,7 @@ function markHits(board, elementId, surrenderText) {
 function redrawGrid() {
     //Reset the sonar flag
     isSonar = false;
+    direction = 0;
 
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
@@ -125,16 +126,13 @@ function redrawGrid() {
         //
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
-
     game.playersBoard.ships.forEach((ship) => ship.captainSquares.forEach(square => {
-
         console.log(square.row-1, square.column.charCodeAt(0));
     document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0)-'A'.charCodeAt(0)].classList.remove("occupied");
     document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0)-'A'.charCodeAt(0)].classList.add("captain");
 }));
     markHits(game.opponentsBoard, "opponent", "You won the game!");
     markHits(game.playersBoard, "player", "You lose!");
-
 }
 
 
@@ -184,12 +182,11 @@ function cellClick() {
                     para.appendChild(t);
                     document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
                     game = data;
-                    console.log("redraw problem");
                     redrawGrid();
-                    console.log("Not redraw problem ");
                     placedShips++;
                     if (placedShips == 4)
                     {
+
                         isSetup = false;
                         registerCellListener((e) => {});
                     }
@@ -203,7 +200,7 @@ function cellClick() {
            }
         }
     }
-    else if(isLaser)
+    /*else if(isLaser)
     {
         console.log("Using space laser to attack");
             //game.playersBoard.setSwitch(true);
@@ -222,7 +219,7 @@ function cellClick() {
             })
         }
         //isLaser = false;
-    }
+    }*/
     else if (isSonar)
     {
         if(parentTag == "player")
@@ -322,11 +319,7 @@ function place(size) {
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
-    document.getElementById("place_space_laser").addEventListener("click", function(e) {
-        isLaser = true;
-        isSonar = false;
-        registerCellListener(place(1));
-    });
+
     document.getElementById("place_sonar_pulse").addEventListener("click", function(e) {
         isSonar = true;
         isLaser = false;
@@ -350,6 +343,54 @@ function initGame() {
     document.getElementById("place_submarine").addEventListener("click", function(e) {
         shipType = "SUBMARINE";
         registerCellListener(place(5));
+    });
+    document.getElementById("move_n").addEventListener("click", function(e) {
+        direction = 1;
+        console.log("== Move the fleet!");
+        sendXhr("POST", "/move", {game: game, x: direction, y: '`'}, function(data) {
+            var para = document.createElement("P");
+            var t = document.createTextNode("Succuessfully move your fleet");
+            para.appendChild(t);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
+            game = data;
+            redrawGrid();
+        });
+    });
+    document.getElementById("move_e").addEventListener("click", function(e) {
+        direction = 2;
+        console.log("== Move the fleet!");
+        sendXhr("POST", "/move", {game: game, x: direction, y: '`'}, function(data) {
+            var para = document.createElement("P");
+            var t = document.createTextNode("Succuessfully move your fleet");
+            para.appendChild(t);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
+            game = data;
+            redrawGrid();
+        });
+    });
+    document.getElementById("move_s").addEventListener("click", function(e) {
+        direction = 3;
+        console.log("== Move the fleet!");
+        sendXhr("POST", "/move", {game: game, x: direction, y: '`'}, function(data) {
+            var para = document.createElement("P");
+            var t = document.createTextNode("Succuessfully move your fleet");
+            para.appendChild(t);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
+            game = data;
+            redrawGrid();
+        });
+    });
+    document.getElementById("move_w").addEventListener("click", function(e) {
+        direction = 4;
+        console.log("== Move the fleet!");
+        sendXhr("POST", "/move", {game: game, x: direction, y: '`'}, function(data) {
+            var para = document.createElement("P");
+            var t = document.createTextNode("Succuessfully move your fleet");
+            para.appendChild(t);
+            document.getElementById("inf_table").insertBefore(para, document.getElementById("inf_table").firstChild);
+            game = data;
+            redrawGrid();
+        });
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
