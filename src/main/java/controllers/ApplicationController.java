@@ -52,13 +52,19 @@ public class ApplicationController {
             return Results.badRequest();
         }
     }
-    public Result laser(Context context, AttackGameAction g)
+
+
+    public Result move(Context context, AttackGameAction g)
     {
         Game game = g.getGame();
-        boolean result = game.laserAttack(g.getActionRow(), g.getActionColumn());
-        if (result) {
+        int direction = g.getActionRow();
+        boolean result = game.moveFleet(direction);
+        if(result)
+        {
             return Results.json().render(game);
-        } else {
+        }
+        else
+        {
             return Results.badRequest();
         }
     }
