@@ -6,9 +6,7 @@ var game;
 var shipType;
 var vertical;
 var submerged;
-var type1 = false; //Minesweeper
-var type2 = false; //Destroyer
-var type3 = false; //BattleShip
+
 var pass = false;
 var direction = 0;
 
@@ -203,7 +201,7 @@ function cellClick() {
            }
         }
     }
-    else if(isLaser)
+    /*else if(isLaser)
     {
         console.log("Using space laser to attack");
             //game.playersBoard.setSwitch(true);
@@ -222,7 +220,7 @@ function cellClick() {
             })
         }
         //isLaser = false;
-    }
+    }*/
     else if (isSonar)
     {
         if(parentTag == "player")
@@ -322,11 +320,7 @@ function place(size) {
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
- document.getElementById("place_space_laser").addEventListener("click", function(e) {
-        isLaser = true;
-        isSonar = false;
-        registerCellListener(place(1));
-    });
+
     document.getElementById("place_sonar_pulse").addEventListener("click", function(e) {
         isSonar = true;
         isLaser = false;

@@ -46,6 +46,9 @@ public class Game {
 
         System.out.println("==== Player attack!");
         System.out.println("** Player's fire coordinate: " + x + " " + y);
+
+        laserAttack(x-1, y);
+
         Result playerAttack = opponentsBoard.attack(x-1, y);
         if (playerAttack.getResult() == INVALID) {
             System.out.println("** Fire invalid! Return false to client!");
@@ -202,18 +205,17 @@ public class Game {
         return false;
     }
 
-    public boolean laserAttack(int x, char y){
+    public void laserAttack(int x, char y){
 
         if(checkLaser(x, y))
         {
             System.out.println("==== Laser Attack!");
-            this.opponentsBoard.setSwitch(true);
-            this.opponentsBoard.attack(x-1,y);
+            this.opponentsBoard.setSwitch(true);     
             System.out.println("** Laser Attack Succeed!");
-            return true;
+
         }
-        System.out.println("** Sonar Attack Fail!");
-        return false;
+        System.out.println("** Laser Attack Fail!");
+
     }
 
     private boolean checkLaser(int x, char y)
