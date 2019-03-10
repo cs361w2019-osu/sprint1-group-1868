@@ -220,6 +220,92 @@ public class Ship
 		}
 	}
 
+	public boolean move(int direction)
+	{
+
+		int check_fg = 0;		//This flag was used to check if the ship moved to the edge
+
+		for(int i = 0; i < this.getOccupiedSquares().size(); i++)
+		{
+			if(direction == 1)
+			{
+				this.getOccupiedSquares().get(i).setRow(this.getOccupiedSquares().get(i).getRow()-1);
+				if(this.getOccupiedSquares().get(i).getRow() < 1)
+				{
+					check_fg = 1;
+				}
+			}
+			else if(direction == 2)
+			{
+				this.getOccupiedSquares().get(i).setColumn((char)(((int)this.getOccupiedSquares().get(i).getColumn())+1));
+				if((int)this.getOccupiedSquares().get(i).getColumn()-65 > 9)
+				{
+					check_fg = 1;
+				}
+			}
+			else if(direction == 3)
+			{
+				this.getOccupiedSquares().get(i).setRow(this.getOccupiedSquares().get(i).getRow()+1);
+				if(this.getOccupiedSquares().get(i).getRow() > 10)
+				{
+					check_fg = 1;
+				}
+			}
+			else if(direction == 4)
+			{
+				this.getOccupiedSquares().get(i).setColumn((char)(((int)this.getOccupiedSquares().get(i).getColumn())-1));
+				if((int)this.getOccupiedSquares().get(i).getColumn()-65 < 0)
+				{
+					check_fg = 1;
+				}
+			}
+		}
+
+		if(check_fg == 1)		//If the ship can't move
+		{
+			for(int i = 0; i < this.occupiedSquares.size(); i++)		//Reset the ship
+			{
+				if(direction == 1)
+				{
+					this.getOccupiedSquares().get(i).setRow(this.getOccupiedSquares().get(i).getRow()+1);
+				}
+				else if(direction == 2)
+				{
+					this.getOccupiedSquares().get(i).setColumn((char)(((int)this.getOccupiedSquares().get(i).getColumn())-1));
+				}
+				else if(direction == 3)
+				{
+					this.getOccupiedSquares().get(i).setRow(this.getOccupiedSquares().get(i).getRow()-1);
+				}
+				else if(direction == 4)
+				{
+					this.getOccupiedSquares().get(i).setColumn((char)(((int)this.getOccupiedSquares().get(i).getColumn())+1));
+				}
+			}
+			return false;
+		}
+		else		//If the ship can move, move the captain square
+		{
+			if(direction == 1)
+			{
+				this.captainSquares.get(0).setRow(this.captainSquares.get(0).getRow() - 1);
+			}
+			else if(direction == 2)
+			{
+				this.captainSquares.get(0).setColumn((char)((int)this.captainSquares.get(0).getColumn() + 1));
+			}
+			else if(direction == 3)
+			{
+				this.captainSquares.get(0).setRow(this.captainSquares.get(0).getRow() + 1);
+			}
+			else if(direction == 4)
+			{
+				this.captainSquares.get(0).setColumn((char)((int)this.captainSquares.get(0).getColumn() - 1));
+			}
+			return true;
+		}
+	}
+
 	//This function is used to set the ship status to sunk
 	public void shipSunk()
 	{
